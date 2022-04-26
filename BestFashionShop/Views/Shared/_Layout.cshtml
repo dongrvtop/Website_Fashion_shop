@@ -1,0 +1,457 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/Css/Style.css" rel="stylesheet" />
+    <link href="~/Content/allFontAweSome.css" rel="stylesheet" />
+    <link href="~/Scripts/slick/slick.css" rel="stylesheet" />
+    <link href="~/Scripts/slick/slick-theme.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>*@
+    <div id="_Layout" class="no-padding hidden-sm hidden-xs col-md-12">
+        <div class="menu-desktop hidden-sm hidden-xs menu-desktopTypeNotShadow" v-on:mouseleave="HoverOutMenu" v-on:mouseover="HoverMenu">
+            <div class="wrap-logo wrap-logp-mb col-md-3">
+                <a href="/">
+                    <img height="23" src="//file.hstatic.net/1000360430/file/logo-svg.svg" alt="JUNO" class="img-responsive logoimg" width="90px" />
+                </a>
+            </div>
+            <div id="nav" class="col-md-6">
+                <nav class="main-nav text-center">
+                    <ul class="clearfix">
+                        <li class="category_item">
+                            <a data-eventLabel="Hàng Mới" class="home-main-menu" href="https://juno.vn/collections/san-pham-moi-nhat?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=newin" title="Hàng Mới">
+                                Hàng Mới
+                            </a>
+                        </li>
+                        <li class="home-main-menu megaMenuHover category_item" v-on:mouseover="HoverProduct">
+                            <a data-eventLabel="Sản phẩm" href="https://juno.vn/collections/san-pham-moi-nhat?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=sanpham" title="Sản phẩm">
+                                Sản phẩm
+                            </a>
+                        </li>
+                        <li class="category_item">
+                            <a data-eventLabel="Unstoppable New Year" class="home-main-menu" href="https://juno.vn/collections/unstoppable-new-year?itm_source=homepage&itm_medium=menu&itm_campaign=bst&itm_content=bst" title="Unstoppable New Year">
+                                Unstoppable New Year
+                            </a>
+                        </li>
+                        <li class="category_item boldSale">
+                            <a data-eventLabel="Sale" class="home-main-menu" href="https://juno.vn/collections/sale-online?itm_source=homepage&itm_medium=menu&itm_campaign=saleonline&itm_content=salet3" title="Sale">
+                                Sale
+                            </a>
+                        </li>
+                        <li class="category_item">
+                            <a data-eventLabel="Showroom" class="home-main-menu" href="https://juno.vn/blogs/he-thong-cua-hang?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=showroon" title="Showroom">
+                                Showroom
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="menuSearch no-padding col-xs-12 hidden-sm hidden-xs col-md-2">
+                <div class="searchFormHeader">
+                    <form class="searchHeader searchDesktop" action="/search">
+
+                        <!--
+                        <input type="hidden" name="type" value="product" />
+                        <input type="text" name="q" class="searchInput" placeholder="Tìm kiếm..." value=""  />
+                        <input type="submit" class="btnSearch" />
+                        -->
+
+                        <div class="searchBox">
+                            <input type="hidden" name="type" value="product" />
+                            <input autocomplete="off" type="text" name="q" class="searchInput" placeholder="Tìm kiếm" value="">
+                            <span class="btnSearch">
+                                <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.3457 5.49982C11.3457 8.26112 9.10717 10.4996 6.34572 10.4996C3.58427 10.4996 1.3457 8.26112 1.3457 5.49982C1.3457 2.73851 3.58427 0.5 6.34572 0.5C9.10717 0.5 11.3457 2.73851 11.3457 5.49982Z" stroke="#2D2D2D" />
+                                    <line y1="-0.5" x2="4.94967" y2="-0.5" transform="matrix(0.70712 0.707094 -0.70712 0.707094 9.3457 9.50012)" stroke="#2D2D2D" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+
+
+                        </div>
+
+
+
+                    </form>
+
+                    <div id="resultSearchDesktop" class="resultDesktop">
+                        <div class="innerResultDesktop"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="menuCarts no-padding hidden-sm hidden-xs col-md-1 right-cus">
+
+
+                <span id="account-handle" class="icon-cart">
+                    <a class="account-handle-icon" href="javascript:void(0)" class="count-holder">
+                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.99952 8C4.79727 8 2.98828 6.19608 2.98828 4C2.98828 1.80392 4.79727 0 6.99952 0C9.20176 0 11.0108 1.80392 11.0108 4C11.0108 6.19608 9.20176 8 6.99952 8ZM6.99952 1.01961C5.34783 1.01961 4.01075 2.35294 4.01075 4C4.01075 5.64706 5.34783 6.98039 6.99952 6.98039C8.6512 6.98039 9.98828 5.64706 9.98828 4C9.98828 2.35294 8.6512 1.01961 6.99952 1.01961Z" fill="#2D2D2D" />
+                            <path d="M13.5281 15.9998H0.47191C0.157303 15.9998 0 15.7645 0 15.5292V12.0782C0 11.5292 0.235955 11.0586 0.707865 10.8233C4.48315 8.47036 9.59551 8.47036 13.3708 10.8233C13.764 11.0586 14.0787 11.6076 14.0787 12.0782V15.5292C14 15.7645 13.764 15.9998 13.5281 15.9998ZM1.02247 14.9802H13.0562V12.0782C13.0562 11.9213 12.9775 11.7645 12.8202 11.686C9.35955 9.5684 4.7191 9.5684 1.25843 11.686C1.10112 11.7645 1.02247 11.9213 1.02247 12.0782V14.9802Z" fill="#2D2D2D" />
+                        </svg>
+                    </a>
+                </span>
+                <span id="like-handle" class="icon-cart hidden">
+                    <a href="/" class="count-holder">
+                        <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.1204 0.303573C8.59866 0.513019 8.11204 0.822202 7.69064 1.24109L7.49498 1.43558L7.29933 1.24109C5.6388 -0.414528 2.92475 -0.414528 1.25418 1.24608C0.446488 2.04896 0 3.11614 0 4.25313C0 5.39012 0.446488 6.4573 1.25418 7.26018L2.04682 8.04809L2.7592 8.75622L6.69732 12.6709C6.91806 12.8903 7.21405 13 7.50502 13C7.79599 13 8.08696 12.8903 8.31271 12.6709L13.7458 7.26018C14.5535 6.4573 15 5.39012 15 4.25313C15 3.11614 14.5535 2.04896 13.7458 1.24608C12.7926 0.293599 11.4933 -0.110333 10.2441 0.0292982C9.78261 0.0542323 9.1204 0.303573 9.1204 0.303573ZM13.0385 6.55704L7.60033 11.9627C7.54515 12.0176 7.45987 12.0176 7.40468 11.9627L1.96154 6.55704C1.34448 5.93867 1.00334 5.12083 1.00334 4.25313C1.00334 3.38542 1.34448 2.5626 1.96154 1.94922C2.58361 1.33584 3.40635 0.99674 4.27926 0.99674C5.15217 0.99674 5.97993 1.33584 6.59699 1.94922L7.14381 2.49278C7.33946 2.68727 7.65552 2.68727 7.85117 2.49278L8.39799 1.94922C9.02508 1.33584 9.84783 0.99674 10.7207 0.99674C11.5936 0.99674 12.4214 1.33584 13.0385 1.94922C13.6555 2.5626 13.9967 3.38044 13.9967 4.25313C13.9967 5.12582 13.6555 5.93867 13.0385 6.55704Z" fill="#2D2D2D" />
+                        </svg>
+                    </a>
+                </span>
+                <span id="site-cart-handle" class="icon-cart" aria-label="Open cart" title="Giỏ hàng">
+                    <a href="/cart" class="count-holder">
+                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 16H0V5H15V16ZM0.789474 15.1665H14.1228V5.84209H0.789474V15.1665Z" fill="#2D2D2D" />
+                            <path d="M11.1586 7.25279H10.4849V3.78071C10.4849 2.08325 9.13752 0.694416 7.49074 0.694416C5.84395 0.694416 4.49658 2.08325 4.49658 3.78071V7.17563H3.74805V3.78071C3.74805 1.69746 5.39483 0 7.49074 0C9.58664 0 11.2334 1.69746 11.2334 3.78071V7.25279H11.1586Z" fill="#2D2D2D" />
+                            <path d="M5.09591 6.48145H3V7.25302H5.09591V6.48145Z" fill="#2D2D2D" />
+                            <path d="M11.8322 6.48145H9.73633V7.25302H11.8322V6.48145Z" fill="#2D2D2D" />
+                        </svg>
+                        <span class="count-holder"><span class="count">1</span></span>
+                    </a>
+                </span>
+            </div>
+            <div class="removeDesktopOptimize visible-xs clearfix">
+                <div class="headerMobile">
+                    <a href="#menu-mobile" class="hamburger-menu">
+                        <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line y1="14.5" x2="20" y2="14.5" stroke="black" />
+                            <line y1="7.5" x2="20" y2="7.5" stroke="black" />
+                            <line y1="0.5" x2="20" y2="0.5" stroke="black" />
+                        </svg>
+                    </a>
+                    <div class="wrap-logo">
+                        <a href="https://juno.vn">
+                            <img src="//file.hstatic.net/1000360430/file/logo-svg.svg" alt="JUNO" class="img-responsive logoimg" />
+                        </a>
+                    </div>
+                    <div class="header-wrap-icon">
+                        <span id="site-search-handle" class="icon-search" aria-label="Tìm kiếm" title="Tìm kiếm">
+                            <a href="/search">
+                                <span class="search-menu" aria-hidden="true">
+                                    <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.3457 5.49982C11.3457 8.26112 9.10717 10.4996 6.34572 10.4996C3.58427 10.4996 1.3457 8.26112 1.3457 5.49982C1.3457 2.73851 3.58427 0.5 6.34572 0.5C9.10717 0.5 11.3457 2.73851 11.3457 5.49982Z" stroke="#2D2D2D" />
+                                        <line y1="-0.5" x2="4.94967" y2="-0.5" transform="matrix(0.70712 0.707094 -0.70712 0.707094 9.3457 9.5)" stroke="#2D2D2D" stroke-linejoin="round" />
+                                    </svg>
+
+                                </span>
+                            </a>
+                        </span>
+                        <span class="icon-cart" title="Giỏ hàng">
+                            <a href="/cart">
+                                <span class="cart-menu" aria-hidden="true">
+                                    <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 16H0V5H15V16ZM0.789474 15.1665H14.1228V5.84209H0.789474V15.1665Z" fill="#2D2D2D" />
+                                        <path d="M11.1586 7.25279H10.4849V3.78071C10.4849 2.08325 9.13752 0.694416 7.49074 0.694416C5.84395 0.694416 4.49658 2.08325 4.49658 3.78071V7.17563H3.74805V3.78071C3.74805 1.69746 5.39483 0 7.49074 0C9.58664 0 11.2334 1.69746 11.2334 3.78071V7.25279H11.1586Z" fill="#2D2D2D" />
+                                        <path d="M5.09591 6.48145H3V7.25302H5.09591V6.48145Z" fill="#2D2D2D" />
+                                        <path d="M11.8322 6.48145H9.73633V7.25302H11.8322V6.48145Z" fill="#2D2D2D" />
+                                    </svg>
+                                    <span class="count-holder"><span class="count">1</span></span>
+                                </span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="menu-Product" class="col-md-12 no-padding">
+                <ul class="sub_menu megaMenu col-md-12">
+                    <div class="container">
+                        <div class="col-md-2 col-sm-2 col-level-two text-truncate">
+                            <a class="title-linkv1" href="https://juno.vn/collections/giay?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=giay" title="Giày">
+                                Giày
+                            </a>
+                            <ul>
+                                <li>
+                                    <a data-eventLabel="Giày Sneakers" class="link-vl-2" href="https://juno.vn/collections/giay-sneakers?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=giaysneakers">Giày Sneakers</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Giày cao gót" class="link-vl-2" href="https://juno.vn/collections/giay-cao-got?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=giaycaogot">Giày cao gót</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Giày xăng đan" class="link-vl-2" href="https://juno.vn/collections/giay-xang-dan?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=giayxangdan">Giày xăng đan</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Giày búp bê" class="link-vl-2" href="https://juno.vn/collections/giay-bup-be?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=giaybupbe">Giày búp bê</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Dép guốc" class="link-vl-2" href="https://juno.vn/collections/dep-guoc?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=depguoc">Dép guốc</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-level-two text-truncate">
+                            <a class="title-linkv1" href="https://juno.vn/collections/tui-xach?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=tui" title="Túi">
+                                Túi
+                            </a>
+                            <ul>
+
+                                <li>
+                                    <a data-eventLabel="Túi cỡ nhỏ" class="link-vl-2" href="https://juno.vn/collections/tui-xach-co-nho?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=txn">Túi cỡ nhỏ</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Túi cỡ trung" class="link-vl-2" href="https://juno.vn/collections/tui-xach-co-trung?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=txt">Túi cỡ trung</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Túi cỡ lớn" class="link-vl-2" href="https://juno.vn/collections/tui-xach-co-lon?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=txl">Túi cỡ lớn</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Balo" class="link-vl-2" href="https://juno.vn/collections/ba-lo-thoi-trang?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=balo">Balo</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Ví - Clutch" class="link-vl-2" href="https://juno.vn/collections/vi-cam-tay?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=vi">Ví - Clutch</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-level-two text-truncate">
+                            <a class="title-linkv1" href="https://juno.vn/collections/phu-kien?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=phukien" title="Phụ Kiện">
+                                Phụ Kiện
+                            </a>
+                            <ul>
+                                <li>
+                                    <a data-eventLabel="Mắt kính" class="link-vl-2" href="https://juno.vn/collections/mat-kinh?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=matkinh">Mắt kính</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Vớ" class="link-vl-2" href="https://juno.vn/collections/vo?itm_source=homepage&itm_medium=smn&itm_campaign=sp&itm_content=vo">Vớ</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-level-two text-truncate">
+                            <a class="title-linkv1" href="https://juno.vn/collections/quan-ao?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=quanao" title="Quần Áo">
+                                Quần Áo
+                            </a>
+                            <ul>
+                                <li>
+                                    <a data-eventLabel="Quần" class="link-vl-2" href="https://juno.vn/collections/quan?itm_source=homepage&itm_medium=sbmenu&itm_campaign=quanao&itm_content=quan">Quần</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Áo" class="link-vl-2" href="https://juno.vn/collections/ao?itm_source=homepage&itm_medium=sbmenu&itm_campaign=quanao&itm_content=ao">Áo</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Đầm" class="link-vl-2" href="https://juno.vn/collections/dam?itm_source=homepage&itm_medium=sbmenu&itm_campaign=quanao&itm_content=dam					">Đầm</a>
+                                </li>
+
+                                <li>
+                                    <a data-eventLabel="Váy" class="link-vl-2" href="https://juno.vn/collections/vay?itm_source=homepage&itm_medium=sbmenu&itm_campaign=quanao&itm_content=vay">Váy</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-level-two text-truncate">
+                            <a class="title-linkv1" href="https://juno.vn/collections/list-collections?itm_source=homepage&itm_medium=menu&itm_campaign=normal&itm_content=bosuutap" title="Bộ Sưu Tập">
+                                Bộ Sưu Tập
+                            </a>
+                            <ul>
+                                <li>
+                                    <a data-eventLabel="Sun Moon" class="link-vl-2" href="https://juno.vn/collections/sun-moon?itm_source=homepage&itm_medium=smn&itm_campaign=clt&itm_content=sunmoon">Sun Moon</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Juno Sneakers Thả Thính Mùa Hè" class="link-vl-2" href="https://juno.vn/collections/juno-sneakers-tha-thinh-mua-he?itm_source=homepage&itm_medium=smn&itm_campaign=sneakers&itm_content=sneakersttmh">Juno Sneakers Thả Thính Mùa Hè</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Summer Taste" class="link-vl-2" href="https://juno.vn/collections/summer-taste?itm_source=homepage&itm_medium=smn&itm_campaign=bst&itm_content=summertaste">Summer Taste</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Juno Sneakers Thả Thính Tình yêu" class="link-vl-2" href="https://juno.vn/collections/juno-sneakers-tha-thinh-tinh-yeu?itm_source=homepage&itm_medium=menu&itm_campaign=sneakers&itm_content=bst-sp	">Juno Sneakers Thả Thính Tình yêu</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Imperfect Perfection" class="link-vl-2" href="https://juno.vn/collections/imperfect-perfection-collection?itm_source=homepage&itm_medium=smn&itm_campaign=bst&itm_content=imperfect-perfection	">Imperfect Perfection</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="The Fold" class="link-vl-2" href="https://juno.vn/collections/the-fold?itm_source=homepage&itm_medium=smn&itm_campaign=clt&itm_content=thefold">The Fold</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Your Next Move" class="link-vl-2" href="https://juno.vn/collections/your-next-move?itm_source=homepage&itm_medium=smn&itm_campaign=clt&itm_content=yournextmove">Your Next Move</a>
+                                </li>
+                                <li>
+                                    <a data-eventLabel="Disney x Juno" class="link-vl-2" href="https://juno.vn/collections/disney-x-juno?itm_source=homepage&itm_medium=smn&itm_campaign=clt&itm_content=disneyxjuno">Disney x Juno</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </ul>
+                <div class="col-xs-12 col-sm-12 bottom-megamenu">
+                    <span>Miễn phí giao hàng toàn quốc với hóa đơn từ 300.000 đồng | Thời gian đổi trả sản phẩm lên đến 30 ngày</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 body-content" style="padding: 0 !important;">
+        @RenderBody()
+    </div>
+    <section id="sectionInfoFooter" class="clearfix col-md-12">
+        <div class="container-fluid clearfix">
+            <div class="innerInfoFooter clearfix">
+                <div class="col-xs-12 col-md-4 site-animation">
+                    <h4>
+                        GỌI MUA HÀNG ONLINE (08:00 - 21: 00 mỗi ngày)
+                    </h4>
+                    <div class="infoContent">
+                        <p>
+                            <span class="titleHotline"><a href="tel:1800 1162">1800 1162</a></span>
+                            <span class="moreInfoFooter">Tất cả các ngày trong tuần (Trừ tết Âm Lịch)</span>
+                        </p>
+                    </div>
+
+                    <h4 style="margin-top: 50px" class="xxx">
+                        GÓP Ý & KHIẾU NẠI (08:30 - 20:30)
+                    </h4>
+                    <div class="infoContent">
+                        <p>
+                            <span class="titleHotline"><a href="tel:1800 1160">1800 1160</a></span>
+                            <span class="moreInfoFooter">Tất cả các ngày trong tuần (Trừ tết Âm Lịch)</span>
+                        </p>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-xs-12 col-md-4 site-animation mid_site-animation">
+
+
+
+                    <h4>
+                        HỆ THỐNG SHOWROOM
+                    </h4>
+                    <ul>
+                        <a class="link-showroom-home" href="/blogs/he-thong-cua-hang">
+                            <img src="https://file.hstatic.net/1000003969/file/showroom-duoi-700x330_905a99aac7a64b0a892b7dbe67e56de8.jpg" alt="Store" />
+                        </a>
+                        <a class="store_bellow_link" href="/blogs/he-thong-cua-hang">Xem địa chỉ hệ thống 61 showroom<i class="fa-solid fa-caret-right"></i></a>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-md-4 site-animation">
+                    <h4>
+                        FANPAGE CỦA CHÚNG TÔI
+                    </h4>
+
+                    <a data-eventLabel="facebook" class="link-fp-fb" href="https://www.facebook.com/giayjuno/">
+                        <img src="https://file.hstatic.net/1000003969/file/700x330_68d641f274924d17a3af2287477fa0e4.jpg" alt="Fanpage" />
+                    </a>
+                    <ul class="navbar-social">
+                        <li class="social">
+                            <a data-eventLabel="facebook" class="link-social" href="//www.facebook.com/giayjuno" target="_blank" rel="nofollow">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="social">
+                            <a data-eventLabel="instagram" class="link-social" href="//www.instagram.com/juno.vn/" target="_blank" rel="nofollow">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li class="social">
+                            <a data-eventLabel="youtube" class="link-social" href="//www.youtube.com/user/JunoShoesVn" target="_blank" rel="nofollow">
+                                <i class="fa-brands fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li class="social">
+                            <a data-eventLabel="zalo" class="link-social" href="http://zalo.me/giayjuno" target="_blank" rel="nofollow">
+                                <i class="fa-zalo"></i>
+                            </a>
+                        </li>
+                        <li class="social">
+                            <a data-eventLabel="zalo" class="link-social" href="http://zalo.me/giayjuno" target="_blank" rel="nofollow">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <footer id="footerBottom" class="clearfix col-md-12">
+        <div class="container-fluid clearfix">
+            <div class="innerInfoFooter">
+                <div class="col-xs-12 col-sm-4">
+                    <h4 class="categoryFooter" v-on:click="ShowHideFooter()">
+                        HỖ TRỢ KHÁCH HÀNG<i class="fa fa-chevron-down hidden-xs" aria-hidden="true"></i>
+                    </h4>
+                    <ul id="lstCustomerSupport" class="lstFooter HideDisplay" v-bind:class="{'ShowDisplay': checkShowFooter}">
+                        <li><a data-eventLabel="Hướng dẫn chọn cỡ giày" class="link-bottom" href="/pages/huong-dan-chon-size-giay">Hướng dẫn chọn cỡ giày</a></li>
+                        <li><a data-eventLabel="Chính sách đổi trả" class="link-bottom" href="/pages/chinh-sach-doi-tra-va-hoan-tien">Chính sách đổi trả</a></li>
+                        <li><a data-eventLabel="Thanh toán giao nhận" class="link-bottom" href="/pages/thanh-toan-giao-nhan">Thanh toán giao nhận</a></li>
+                        <li><a data-eventLabel="Chính sách bảo mật" class="link-bottom" href="/pages/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
+                        <li><a data-eventLabel="Câu hỏi thường gặp" class="link-bottom" href="/pages/cau-hoi-thuong-gap">Câu hỏi thường gặp</a></li>
+                        <li><a data-eventLabel="Chính sách khách hàng thân thiết" class="link-bottom" href="/pages/khachhangthanthiet">Chính sách khách hàng thân thiết</a></li>
+                        <li><a data-eventLabel="Hướng dẫn mua hàng Online" class="link-bottom" href="/pages/huong-dan-mua-hang-online">Hướng dẫn mua hàng Online</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h4 class="categoryFooter" v-on:click="ShowHideFooter()">
+                        VỀ JUNO
+                        <i class="fa fa-chevron-down hidden-xs" aria-hidden="true" v-if="!checkShowFooter"></i>
+                    </h4>
+                    <ul id="lstAboutJuno" class="lstFooter HideDisplay" v-bind:class="{'ShowDisplay': checkShowFooter}">
+                        <li><a data-eventLabel="Giới thiệu" class="link-bottom" href="/pages/gioi-thieu">Giới thiệu</a></li>
+                        <li><a data-eventLabel="Liên hệ" class="link-bottom" href="/pages/lien-he">Liên hệ</a></li>
+                        <li><a data-eventLabel="Tin tức Juno" class="link-bottom" href="/blogs/tin-tuc-juno">Tin tức Juno</a></li>
+                        <li><a data-eventLabel="Thông tin thời trang" class="link-bottom" href="/blogs/thong-tin-thoi-trang">Thông tin thời trang</a></li>
+                        <li><a data-eventLabel="Cơ hội làm việc tại Juno" class="link-bottom" href="https://dreamf.talent.vn/">Cơ hội làm việc tại Juno</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="bottomBar">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+                    <div class="desBottom">
+                        © Công ty Cổ phần Seedcom Fashion Group
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <div class="imgBottom">
+                        <a href="http://online.gov.vn/Home/WebDetails/69624" target="_blank">
+                            <img src="https://file.hstatic.net/1000003969/file/icon-dangky_ed795de8b131419393b256f6384de715.png">
+                        </a>
+                        <p>Powered by <a target="_blank" href="https://haravan.com/?hchan=juno">Haravan Enterprise.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script type="text/javascript" src="~/Scripts/slick/slick.js"></script>
+    <script type="text/javascript" src="~/Scripts/slick/slick.min.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script src="~/Scripts/Shared/_Layout.js">
+    </script>
+    <script src="~/Scripts/allFontAweSome.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

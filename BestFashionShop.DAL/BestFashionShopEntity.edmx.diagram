@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="47cb77236d4d4763a685d4b5324dc5c4" Name="Diagram1">
+        <EntityTypeShape EntityType="BestFashionShopModel.Cart" Width="1.5" PointX="7.5" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Category" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.City" Width="1.5" PointX="7.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.District" Width="1.5" PointX="10" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.MyCollection" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Product" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ProductCategory" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ProductImage" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Role" Width="1.5" PointX="3" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ShowRoom" Width="1.5" PointX="12.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.User" Width="1.5" PointX="5.25" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Ward" Width="1.5" PointX="12.25" PointY="15.5" IsExpanded="true" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_User" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ProductCategory_Id_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_District_Id_City" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_City" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_District" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Ward_Id_District" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_MyCollection" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_ProductCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ProductImage_Id_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="BestFashionShopModel.fk_User_Id_Role" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

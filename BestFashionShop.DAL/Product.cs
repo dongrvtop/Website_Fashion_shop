@@ -18,13 +18,13 @@ namespace BestFashionShop.DAL
         public Product()
         {
             this.Carts = new HashSet<Cart>();
+            this.OrderDetails = new HashSet<OrderDetail>();
             this.ProductImages = new HashSet<ProductImage>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public string MetaTitle { get; set; }
         public string Description { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> PromotionPrice { get; set; }
@@ -35,14 +35,16 @@ namespace BestFashionShop.DAL
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
-        public Nullable<bool> Status { get; set; }
-        public Nullable<System.DateTime> TopHot { get; set; }
         public Nullable<int> CollectionId { get; set; }
         public Nullable<bool> NewProduct { get; set; }
+        public string PromotionPercent { get; set; }
+        public Nullable<bool> TopHot { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual MyCollection MyCollection { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductImage> ProductImages { get; set; }

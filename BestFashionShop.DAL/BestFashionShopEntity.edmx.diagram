@@ -5,29 +5,35 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="47cb77236d4d4763a685d4b5324dc5c4" Name="Diagram1">
-        <EntityTypeShape EntityType="BestFashionShopModel.Cart" Width="1.5" PointX="7.5" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.Category" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.City" Width="1.5" PointX="7.75" PointY="11.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.District" Width="1.5" PointX="10" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.MyCollection" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.Product" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.ProductCategory" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.ProductImage" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.Role" Width="1.5" PointX="3" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.ShowRoom" Width="1.5" PointX="12.25" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.User" Width="1.5" PointX="5.25" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="BestFashionShopModel.Ward" Width="1.5" PointX="12.25" PointY="15.5" IsExpanded="true" />
-        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_User" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_ProductCategory_Id_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_District_Id_City" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_City" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_District" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_Ward_Id_District" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_MyCollection" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_ProductCategory" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_ProductImage_Id_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="BestFashionShopModel.fk_User_Id_Role" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Cart" Width="1.5" PointX="7.5" PointY="3.125" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Category" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="BestFashionShopModel.City" Width="1.5" PointX="9.75" PointY="5.375" />
+        <EntityTypeShape EntityType="BestFashionShopModel.District" Width="1.5" PointX="12" PointY="5.125" />
+        <EntityTypeShape EntityType="BestFashionShopModel.MyCollection" Width="1.5" PointX="3" PointY="1.625" />
+        <EntityTypeShape EntityType="BestFashionShopModel.OrderDetail" Width="1.5" PointX="7.5" PointY="6.25" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Order" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Product" Width="1.5" PointX="5.25" PointY="4.75" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ProductCategory" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ProductImage" Width="1.5" PointX="7.5" PointY="12.375" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Role" Width="1.5" PointX="3" PointY="12.125" />
+        <EntityTypeShape EntityType="BestFashionShopModel.ShowRoom" Width="1.5" PointX="14.25" PointY="4.5" />
+        <EntityTypeShape EntityType="BestFashionShopModel.sysdiagram" Width="1.5" PointX="9.75" PointY="8.875" />
+        <EntityTypeShape EntityType="BestFashionShopModel.User" Width="1.5" PointX="5.25" PointY="11" />
+        <EntityTypeShape EntityType="BestFashionShopModel.Ward" Width="1.5" PointX="14.25" PointY="9.625" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_Product" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Cart_Id_User" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ProductCategory_Id_Category" />
+        <AssociationConnector Association="BestFashionShopModel.fk_District_Id_City" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_City" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ShowRoom_Id_District" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Ward_Id_District" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_MyCollection" />
+        <AssociationConnector Association="BestFashionShopModel.fk_OrderDetail_Orders" />
+        <AssociationConnector Association="BestFashionShopModel.fk_OrderDetail_Product" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Orders_User" />
+        <AssociationConnector Association="BestFashionShopModel.fk_Product_Id_ProductCategory" />
+        <AssociationConnector Association="BestFashionShopModel.fk_ProductImage_Id_Product" />
+        <AssociationConnector Association="BestFashionShopModel.fk_User_Id_Role" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

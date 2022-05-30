@@ -38,13 +38,14 @@
     padding: 1.5em 2em 1em 2em;
     
 }
-.main-nav a {
+.main-nav span {
+    cursor:pointer;
     color: #000000;
     text-transform: uppercase;
     font-size:13px;
     font-family:sans-serif;
 }
-.main-nav a:hover {
+.main-nav span:hover {
     text-decoration: none;
     opacity:0.7;
 }
@@ -53,12 +54,13 @@
     justify-content:space-between;
     flex-wrap: wrap;
 }
-#menu-Product a {
+#menu-Product span {
     color: #000000;
     font-size: 13px;
+    cursor:pointer;
 }
-#menu-Product a:hover {
-    /*text-decoration: underline;*/
+#menu-Product span:hover {
+    text-decoration: underline;
     opacity: 0.7;
     color:red;
 }
@@ -79,7 +81,7 @@
     border-bottom: red 1px solid;
     
 }
-.category_item:hover a{
+.category_item:hover span{
     color:red;
     text-decoration:none;
 }
@@ -98,6 +100,7 @@
     display: flex;
     align-items: center;
     justify-content: end;
+    position: relative;
 }
 .menuCarts {
     display: flex;
@@ -246,4 +249,74 @@ footer#footerBottom {
 }
 .div_line{
     padding:0 6em;
+}
+.account_active{
+    cursor:pointer;
+}
+.account_active:hover{
+    text-decoration:none;
+}
+.div_lst_action_user {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    padding: 8px 0;
+    box-shadow: 1px 2px 4px rgb(0 0 0 / 50%);
+}
+.action_user{
+    padding: 8px 16px;
+    cursor:pointer;
+    
+}
+.action_user a {
+    color: black;
+    text-decoration: none;
+}
+.action_user:hover{
+    opacity:0.7;
+    border:1px solid red;
+}
+.box_result_seach {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    background: white;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    /*border: 1px solid red;*/
+    max-height: 460px;
+    overflow: auto;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+.item_image img{
+    width:100%;
+}
+.item_result{
+    padding:8px 0;
+    display:flex;
+    cursor:pointer;
+}
+.item_result:hover{
+    opacity:0.7;
+}
+.prod_name_search {
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.no_result {
+    min-width: 340px;
+    max-width: 400px;
+    padding: 2em;
+}
+.text_logo {
+    color: red;
+    font-size: 30px;
+    font-family: cursive;
+    text-decoration: none;
+}
+.text_logo:hover{
+    text-decoration:none;
+    color:red;
 }

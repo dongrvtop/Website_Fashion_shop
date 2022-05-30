@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BestFashionShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BestFashionShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -61,14 +61,36 @@
           <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
           <Property Name="Status" Type="bit" />
         </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ProductQuantity" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ShipName" Type="nvarchar(max)" />
+          <Property Name="ShipAddress" Type="nvarchar(max)" />
+          <Property Name="ShipPhone" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="int" />
+          <Property Name="PaymentType" Type="int" />
+          <Property Name="PaymentPrice" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="10" />
-          <Property Name="MetaTitle" Type="varchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
           <Property Name="PromotionPrice" Type="decimal" Precision="18" Scale="0" />
@@ -79,10 +101,10 @@
           <Property Name="CreateBy" Type="varchar" MaxLength="20" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
-          <Property Name="Status" Type="bit" />
-          <Property Name="TopHot" Type="datetime" />
           <Property Name="CollectionId" Type="int" />
           <Property Name="NewProduct" Type="bit" />
+          <Property Name="PromotionPercent" Type="char" MaxLength="4" />
+          <Property Name="TopHot" Type="bit" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -90,18 +112,11 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="MetaTitle" Type="nvarchar(max)" />
-          <Property Name="ParentId" Type="bigint" />
-          <Property Name="DisplayOrder" Type="int" />
-          <Property Name="SeoTitle" Type="nvarchar(max)" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateBy" Type="varchar" MaxLength="20" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
-          <Property Name="MetaKeywords" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="Status" Type="bit" />
-          <Property Name="ShowOnHome" Type="bit" />
           <Property Name="CategoryId" Type="int" />
         </EntityType>
         <EntityType Name="ProductImage">
@@ -136,6 +151,16 @@
           <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
           <Property Name="OpenTime" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -151,6 +176,7 @@
           <Property Name="Birthday" Type="datetime" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="RoleId" Type="int" />
+          <Property Name="DeliveryAddress" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Ward">
           <Key>
@@ -193,6 +219,42 @@
             </Principal>
             <Dependent Role="District">
               <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderDetail_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderDetail_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Orders_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -298,11 +360,14 @@
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="District" EntityType="Self.District" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MyCollection" EntityType="Self.MyCollection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShowRoom" EntityType="Self.ShowRoom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ward" EntityType="Self.Ward" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="fk_Cart_Id_Product" Association="Self.fk_Cart_Id_Product">
@@ -316,6 +381,18 @@
           <AssociationSet Name="fk_District_Id_City" Association="Self.fk_District_Id_City">
             <End Role="City" EntitySet="City" />
             <End Role="District" EntitySet="District" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderDetail_Orders" Association="Self.fk_OrderDetail_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderDetail_Product" Association="Self.fk_OrderDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Orders_User" Association="Self.fk_Orders_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="fk_Product_Id_MyCollection" Association="Self.fk_Product_Id_MyCollection">
             <End Role="MyCollection" EntitySet="MyCollection" />
@@ -350,11 +427,83 @@
             <End Role="Ward" EntitySet="Ward" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BestFashionShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BestFashionShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Carts" EntityType="BestFashionShopModel.Cart" />
+          <EntitySet Name="Categories" EntityType="BestFashionShopModel.Category" />
+          <EntitySet Name="Cities" EntityType="BestFashionShopModel.City" />
+          <EntitySet Name="Districts" EntityType="BestFashionShopModel.District" />
+          <EntitySet Name="MyCollections" EntityType="BestFashionShopModel.MyCollection" />
+          <EntitySet Name="OrderDetails" EntityType="BestFashionShopModel.OrderDetail" />
+          <EntitySet Name="Orders" EntityType="BestFashionShopModel.Order" />
+          <EntitySet Name="Products" EntityType="BestFashionShopModel.Product" />
+          <EntitySet Name="ProductCategories" EntityType="BestFashionShopModel.ProductCategory" />
+          <EntitySet Name="ProductImages" EntityType="BestFashionShopModel.ProductImage" />
+          <EntitySet Name="Roles" EntityType="BestFashionShopModel.Role" />
+          <EntitySet Name="ShowRooms" EntityType="BestFashionShopModel.ShowRoom" />
+          <EntitySet Name="sysdiagrams" EntityType="BestFashionShopModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="BestFashionShopModel.User" />
+          <EntitySet Name="Wards" EntityType="BestFashionShopModel.Ward" />
+          <AssociationSet Name="fk_Cart_Id_Product" Association="BestFashionShopModel.fk_Cart_Id_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Cart_Id_User" Association="BestFashionShopModel.fk_Cart_Id_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ProductCategory_Id_Category" Association="BestFashionShopModel.fk_ProductCategory_Id_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="fk_District_Id_City" Association="BestFashionShopModel.fk_District_Id_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="District" EntitySet="Districts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ShowRoom_Id_City" Association="BestFashionShopModel.fk_ShowRoom_Id_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="ShowRoom" EntitySet="ShowRooms" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ShowRoom_Id_District" Association="BestFashionShopModel.fk_ShowRoom_Id_District">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="ShowRoom" EntitySet="ShowRooms" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Ward_Id_District" Association="BestFashionShopModel.fk_Ward_Id_District">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Ward" EntitySet="Wards" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Product_Id_MyCollection" Association="BestFashionShopModel.fk_Product_Id_MyCollection">
+            <End Role="MyCollection" EntitySet="MyCollections" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderDetail_Orders" Association="BestFashionShopModel.fk_OrderDetail_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderDetail_Product" Association="BestFashionShopModel.fk_OrderDetail_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Orders_User" Association="BestFashionShopModel.fk_Orders_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Product_Id_ProductCategory" Association="BestFashionShopModel.fk_Product_Id_ProductCategory">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ProductImage_Id_Product" Association="BestFashionShopModel.fk_ProductImage_Id_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductImage" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_User_Id_Role" Association="BestFashionShopModel.fk_User_Id_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -364,8 +513,8 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Product" Relationship="Self.fk_Cart_Id_Product" FromRole="Cart" ToRole="Product" />
-          <NavigationProperty Name="User" Relationship="Self.fk_Cart_Id_User" FromRole="Cart" ToRole="User" />
+          <NavigationProperty Name="Product" Relationship="BestFashionShopModel.fk_Cart_Id_Product" FromRole="Cart" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="BestFashionShopModel.fk_Cart_Id_User" FromRole="Cart" ToRole="User" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -381,7 +530,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="MetaKeywords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ProductCategories" Relationship="Self.fk_ProductCategory_Id_Category" FromRole="Category" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductCategories" Relationship="BestFashionShopModel.fk_ProductCategory_Id_Category" FromRole="Category" ToRole="ProductCategory" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -389,8 +538,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Districts" Relationship="Self.fk_District_Id_City" FromRole="City" ToRole="District" />
-          <NavigationProperty Name="ShowRooms" Relationship="Self.fk_ShowRoom_Id_City" FromRole="City" ToRole="ShowRoom" />
+          <NavigationProperty Name="Districts" Relationship="BestFashionShopModel.fk_District_Id_City" FromRole="City" ToRole="District" />
+          <NavigationProperty Name="ShowRooms" Relationship="BestFashionShopModel.fk_ShowRoom_Id_City" FromRole="City" ToRole="ShowRoom" />
         </EntityType>
         <EntityType Name="District">
           <Key>
@@ -399,9 +548,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CityId" Type="Int32" />
-          <NavigationProperty Name="City" Relationship="Self.fk_District_Id_City" FromRole="District" ToRole="City" />
-          <NavigationProperty Name="ShowRooms" Relationship="Self.fk_ShowRoom_Id_District" FromRole="District" ToRole="ShowRoom" />
-          <NavigationProperty Name="Wards" Relationship="Self.fk_Ward_Id_District" FromRole="District" ToRole="Ward" />
+          <NavigationProperty Name="City" Relationship="BestFashionShopModel.fk_District_Id_City" FromRole="District" ToRole="City" />
+          <NavigationProperty Name="ShowRooms" Relationship="BestFashionShopModel.fk_ShowRoom_Id_District" FromRole="District" ToRole="ShowRoom" />
+          <NavigationProperty Name="Wards" Relationship="BestFashionShopModel.fk_Ward_Id_District" FromRole="District" ToRole="Ward" />
         </EntityType>
         <EntityType Name="MyCollection">
           <Key>
@@ -418,16 +567,42 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Boolean" />
-          <NavigationProperty Name="Products" Relationship="Self.fk_Product_Id_MyCollection" FromRole="MyCollection" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="BestFashionShopModel.fk_Product_Id_MyCollection" FromRole="MyCollection" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ProductQuantity" Type="Int32" Nullable="false" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="BestFashionShopModel.fk_OrderDetail_Orders" FromRole="OrderDetail" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="BestFashionShopModel.fk_OrderDetail_Product" FromRole="OrderDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ShipName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShipAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShipPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="PaymentType" Type="Int32" />
+          <Property Name="PaymentPrice" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="OrderDetails" Relationship="BestFashionShopModel.fk_OrderDetail_Orders" FromRole="Order" ToRole="OrderDetail" />
+          <NavigationProperty Name="User" Relationship="BestFashionShopModel.fk_Orders_User" FromRole="Order" ToRole="User" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="MetaTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="PromotionPrice" Type="Decimal" Precision="18" Scale="0" />
@@ -438,14 +613,15 @@
           <Property Name="CreateBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Boolean" />
-          <Property Name="TopHot" Type="DateTime" Precision="3" />
           <Property Name="CollectionId" Type="Int32" />
           <Property Name="NewProduct" Type="Boolean" />
-          <NavigationProperty Name="Carts" Relationship="Self.fk_Cart_Id_Product" FromRole="Product" ToRole="Cart" />
-          <NavigationProperty Name="MyCollection" Relationship="Self.fk_Product_Id_MyCollection" FromRole="Product" ToRole="MyCollection" />
-          <NavigationProperty Name="ProductCategory" Relationship="Self.fk_Product_Id_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
-          <NavigationProperty Name="ProductImages" Relationship="Self.fk_ProductImage_Id_Product" FromRole="Product" ToRole="ProductImage" />
+          <Property Name="PromotionPercent" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="TopHot" Type="Boolean" />
+          <NavigationProperty Name="Carts" Relationship="BestFashionShopModel.fk_Cart_Id_Product" FromRole="Product" ToRole="Cart" />
+          <NavigationProperty Name="MyCollection" Relationship="BestFashionShopModel.fk_Product_Id_MyCollection" FromRole="Product" ToRole="MyCollection" />
+          <NavigationProperty Name="OrderDetails" Relationship="BestFashionShopModel.fk_OrderDetail_Product" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="ProductCategory" Relationship="BestFashionShopModel.fk_Product_Id_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductImages" Relationship="BestFashionShopModel.fk_ProductImage_Id_Product" FromRole="Product" ToRole="ProductImage" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -453,21 +629,14 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MetaTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParentId" Type="Int64" />
-          <Property Name="DisplayOrder" Type="Int32" />
-          <Property Name="SeoTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="MetaKeywords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Boolean" />
-          <Property Name="ShowOnHome" Type="Boolean" />
           <Property Name="CategoryId" Type="Int32" />
-          <NavigationProperty Name="Category" Relationship="Self.fk_ProductCategory_Id_Category" FromRole="ProductCategory" ToRole="Category" />
-          <NavigationProperty Name="Products" Relationship="Self.fk_Product_Id_ProductCategory" FromRole="ProductCategory" ToRole="Product" />
+          <NavigationProperty Name="Category" Relationship="BestFashionShopModel.fk_ProductCategory_Id_Category" FromRole="ProductCategory" ToRole="Category" />
+          <NavigationProperty Name="Products" Relationship="BestFashionShopModel.fk_Product_Id_ProductCategory" FromRole="ProductCategory" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -477,7 +646,7 @@
           <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DefaultImage" Type="Boolean" />
           <Property Name="ProductId" Type="Int32" />
-          <NavigationProperty Name="Product" Relationship="Self.fk_ProductImage_Id_Product" FromRole="ProductImage" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="BestFashionShopModel.fk_ProductImage_Id_Product" FromRole="ProductImage" ToRole="Product" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -485,7 +654,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="Self.fk_User_Id_Role" FromRole="Role" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="BestFashionShopModel.fk_User_Id_Role" FromRole="Role" ToRole="User" />
         </EntityType>
         <EntityType Name="ShowRoom">
           <Key>
@@ -502,8 +671,18 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="OpenTime" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="City" Relationship="Self.fk_ShowRoom_Id_City" FromRole="ShowRoom" ToRole="City" />
-          <NavigationProperty Name="District" Relationship="Self.fk_ShowRoom_Id_District" FromRole="ShowRoom" ToRole="District" />
+          <NavigationProperty Name="City" Relationship="BestFashionShopModel.fk_ShowRoom_Id_City" FromRole="ShowRoom" ToRole="City" />
+          <NavigationProperty Name="District" Relationship="BestFashionShopModel.fk_ShowRoom_Id_District" FromRole="ShowRoom" ToRole="District" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -520,8 +699,10 @@
           <Property Name="Birthday" Type="DateTime" Precision="3" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RoleId" Type="Int32" />
-          <NavigationProperty Name="Carts" Relationship="Self.fk_Cart_Id_User" FromRole="User" ToRole="Cart" />
-          <NavigationProperty Name="Role" Relationship="Self.fk_User_Id_Role" FromRole="User" ToRole="Role" />
+          <Property Name="DeliveryAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Carts" Relationship="BestFashionShopModel.fk_Cart_Id_User" FromRole="User" ToRole="Cart" />
+          <NavigationProperty Name="Orders" Relationship="BestFashionShopModel.fk_Orders_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="Role" Relationship="BestFashionShopModel.fk_User_Id_Role" FromRole="User" ToRole="Role" />
         </EntityType>
         <EntityType Name="Ward">
           <Key>
@@ -530,11 +711,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DistrictId" Type="Int32" />
-          <NavigationProperty Name="District" Relationship="Self.fk_Ward_Id_District" FromRole="Ward" ToRole="District" />
+          <NavigationProperty Name="District" Relationship="BestFashionShopModel.fk_Ward_Id_District" FromRole="Ward" ToRole="District" />
         </EntityType>
         <Association Name="fk_Cart_Id_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
-          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <End Type="BestFashionShopModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.Cart" Role="Cart" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="Id" />
@@ -545,8 +726,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_Cart_Id_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <End Type="BestFashionShopModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.Cart" Role="Cart" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
@@ -557,8 +738,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_ProductCategory_Id_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
-          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="*" />
+          <End Type="BestFashionShopModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.ProductCategory" Role="ProductCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
               <PropertyRef Name="Id" />
@@ -569,8 +750,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_District_Id_City">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <End Type="BestFashionShopModel.City" Role="City" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="City">
               <PropertyRef Name="Id" />
@@ -581,8 +762,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_ShowRoom_Id_City">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="ShowRoom" Type="Self.ShowRoom" Multiplicity="*" />
+          <End Type="BestFashionShopModel.City" Role="City" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.ShowRoom" Role="ShowRoom" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="City">
               <PropertyRef Name="Id" />
@@ -593,8 +774,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_ShowRoom_Id_District">
-          <End Role="District" Type="Self.District" Multiplicity="0..1" />
-          <End Role="ShowRoom" Type="Self.ShowRoom" Multiplicity="*" />
+          <End Type="BestFashionShopModel.District" Role="District" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.ShowRoom" Role="ShowRoom" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="Id" />
@@ -605,8 +786,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_Ward_Id_District">
-          <End Role="District" Type="Self.District" Multiplicity="0..1" />
-          <End Role="Ward" Type="Self.Ward" Multiplicity="*" />
+          <End Type="BestFashionShopModel.District" Role="District" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.Ward" Role="Ward" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="Id" />
@@ -617,8 +798,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_Product_Id_MyCollection">
-          <End Role="MyCollection" Type="Self.MyCollection" Multiplicity="0..1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="BestFashionShopModel.MyCollection" Role="MyCollection" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MyCollection">
               <PropertyRef Name="Id" />
@@ -628,9 +809,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_OrderDetail_Orders">
+          <End Type="BestFashionShopModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="BestFashionShopModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderDetail_Product">
+          <End Type="BestFashionShopModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="BestFashionShopModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Orders_User">
+          <End Type="BestFashionShopModel.User" Role="User" Multiplicity="1" />
+          <End Type="BestFashionShopModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_Product_Id_ProductCategory">
-          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="BestFashionShopModel.ProductCategory" Role="ProductCategory" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProductCategory">
               <PropertyRef Name="Id" />
@@ -641,8 +858,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_ProductImage_Id_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
-          <End Role="ProductImage" Type="Self.ProductImage" Multiplicity="*" />
+          <End Type="BestFashionShopModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.ProductImage" Role="ProductImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="Id" />
@@ -653,8 +870,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_User_Id_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Type="BestFashionShopModel.Role" Role="Role" Multiplicity="0..1" />
+          <End Type="BestFashionShopModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Role">
               <PropertyRef Name="Id" />
@@ -664,65 +881,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BestFashionShopEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Carts" EntityType="Self.Cart" />
-          <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="Cities" EntityType="Self.City" />
-          <EntitySet Name="Districts" EntityType="Self.District" />
-          <EntitySet Name="MyCollections" EntityType="Self.MyCollection" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
-          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategory" />
-          <EntitySet Name="ProductImages" EntityType="Self.ProductImage" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="ShowRooms" EntityType="Self.ShowRoom" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="Wards" EntityType="Self.Ward" />
-          <AssociationSet Name="fk_Cart_Id_Product" Association="Self.fk_Cart_Id_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Cart_Id_User" Association="Self.fk_Cart_Id_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Cart" EntitySet="Carts" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ProductCategory_Id_Category" Association="Self.fk_ProductCategory_Id_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="ProductCategory" EntitySet="ProductCategories" />
-          </AssociationSet>
-          <AssociationSet Name="fk_District_Id_City" Association="Self.fk_District_Id_City">
-            <End Role="City" EntitySet="Cities" />
-            <End Role="District" EntitySet="Districts" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ShowRoom_Id_City" Association="Self.fk_ShowRoom_Id_City">
-            <End Role="City" EntitySet="Cities" />
-            <End Role="ShowRoom" EntitySet="ShowRooms" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ShowRoom_Id_District" Association="Self.fk_ShowRoom_Id_District">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="ShowRoom" EntitySet="ShowRooms" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Ward_Id_District" Association="Self.fk_Ward_Id_District">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Ward" EntitySet="Wards" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Product_Id_MyCollection" Association="Self.fk_Product_Id_MyCollection">
-            <End Role="MyCollection" EntitySet="MyCollections" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="fk_Product_Id_ProductCategory" Association="Self.fk_Product_Id_ProductCategory">
-            <End Role="ProductCategory" EntitySet="ProductCategories" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ProductImage_Id_Product" Association="Self.fk_ProductImage_Id_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ProductImage" EntitySet="ProductImages" />
-          </AssociationSet>
-          <AssociationSet Name="fk_User_Id_Role" Association="Self.fk_User_Id_Role">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -731,167 +890,196 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="BestFashionShopModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="BestFashionShopModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
-                <ScalarProperty Name="SeoTitle" ColumnName="SeoTitle" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="SeoTitle" ColumnName="SeoTitle" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="BestFashionShopModel.City">
               <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Districts">
             <EntityTypeMapping TypeName="BestFashionShopModel.District">
               <MappingFragment StoreEntitySet="District">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MyCollections">
             <EntityTypeMapping TypeName="BestFashionShopModel.MyCollection">
               <MappingFragment StoreEntitySet="MyCollection">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
-                <ScalarProperty Name="SeoTitle" ColumnName="SeoTitle" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="SeoTitle" ColumnName="SeoTitle" />
+                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="BestFashionShopModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProductQuantity" ColumnName="ProductQuantity" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="BestFashionShopModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="PaymentPrice" ColumnName="PaymentPrice" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ShipPhone" ColumnName="ShipPhone" />
+                <ScalarProperty Name="ShipAddress" ColumnName="ShipAddress" />
+                <ScalarProperty Name="ShipName" ColumnName="ShipName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="BestFashionShopModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="PromotionPrice" ColumnName="PromotionPrice" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="Detail" ColumnName="Detail" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="TopHot" ColumnName="TopHot" />
-                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
+                <ScalarProperty Name="PromotionPercent" ColumnName="PromotionPercent" />
                 <ScalarProperty Name="NewProduct" ColumnName="NewProduct" />
+                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="PromotionPrice" ColumnName="PromotionPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductCategories">
             <EntityTypeMapping TypeName="BestFashionShopModel.ProductCategory">
               <MappingFragment StoreEntitySet="ProductCategory">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="MetaTitle" ColumnName="MetaTitle" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
-                <ScalarProperty Name="SeoTitle" ColumnName="SeoTitle" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="MetaKeywords" ColumnName="MetaKeywords" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ShowOnHome" ColumnName="ShowOnHome" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductImages">
             <EntityTypeMapping TypeName="BestFashionShopModel.ProductImage">
               <MappingFragment StoreEntitySet="ProductImage">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="DefaultImage" ColumnName="DefaultImage" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="DefaultImage" ColumnName="DefaultImage" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="BestFashionShopModel.Role">
               <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ShowRooms">
             <EntityTypeMapping TypeName="BestFashionShopModel.ShowRoom">
               <MappingFragment StoreEntitySet="ShowRoom">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="OpenTime" ColumnName="OpenTime" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BestFashionShopModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BestFashionShopModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="PhoneConfirmed" ColumnName="PhoneConfirmed" />
-                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DeliveryAddress" ColumnName="DeliveryAddress" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="PhoneConfirmed" ColumnName="PhoneConfirmed" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Wards">
             <EntityTypeMapping TypeName="BestFashionShopModel.Ward">
               <MappingFragment StoreEntitySet="Ward">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

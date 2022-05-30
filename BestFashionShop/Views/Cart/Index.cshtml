@@ -1,0 +1,318 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .title_text{
+        font-size:24px;
+        text-transform:uppercase;
+        font-weight:bold;
+    }
+    #MyCart{
+        padding:8em 4em 4em 4em;
+    }
+    #MyCart .container {
+        border-bottom: 1px solid #eee;
+    }
+    .box_list_product{
+        display:flex;
+        flex-direction:column;
+        margin-top:2em;
+    }
+    .box_product {
+        display: flex;
+        border-bottom: 1px solid #dddddd;
+        padding:16px 0;
+    }
+    .box_image img{
+        width:100%;
+    }
+    .labelNewNew.styleTogetherLabel {
+        border: 1px solid #878484;
+        padding: 4px 8px;
+        margin-bottom: 5px;
+        width: fit-content;
+        border-radius: 5px;
+    }
+    .btn_quantity{
+        margin:0 16px;
+        cursor:pointer;
+    }
+    .product_price{
+        font-weight:bold;
+    }
+    .product_name{
+        font-weight:bold;
+    }
+    .div_mid{
+        margin-top:16px;
+    }
+    .product_code {
+        font-weight: bold;
+        color: #7F7F7F;
+    }
+    .box_right{
+        display:flex;
+        flex-direction:column;
+    }
+    .div_bottom{
+        margin-top:16px;
+    }
+    .cart_description{
+        min-width:100%;
+    }
+    .title_description{
+        font-weight:bold;
+        font-size:24px;
+    }
+    .box_description{
+        padding:4em 0;
+    }
+    .container{
+        width:1370px !important;
+    }
+    .cart_div_right{
+        display:flex;
+        flex-direction:column;
+        padding:2em 1em;
+    }
+    .link_btn_login{
+        text-decoration:underline;
+        font-weight:bold;
+        cursor:pointer;
+        font-size:16px;
+    }
+    .link_btn_login:hover{
+        opacity:0.7;
+    }
+    .title_order {
+        text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-family: system-ui;
+    }
+    .order_summary {
+        background: #f2f2f2;
+        padding:20px;
+        margin-top:16px;
+    }
+    .div_info_order{
+        display:flex;
+        justify-content:space-between;
+        margin-bottom: 10px;
+        font-size:16px;
+    }
+    .total_price{
+        font-weight:bold;
+    }
+    .btn_order{
+        color:white;
+        width:100%;
+        background:black;
+        text-align:center;
+        padding:12px 16px;
+        text-transform:uppercase;
+        cursor:pointer;
+        font-weight:500;
+        font-size:16px;
+        border-radius:4px;
+        margin-bottom:16px;
+    }
+    .btn_order:hover{
+        opacity:0.7;
+    }
+    .btn_buy_more {
+        color: black;
+        width: 100%;
+        background: white;
+        text-align: center;
+        padding: 12px 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 16px;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        border:1px solid black;
+    }
+    .btn_buy_more:hover{
+        color:white;
+        background:black;
+        border:1px solid white;
+    }
+    .text_description {
+        color: #737575;
+        font-style:italic;
+        font-size:16px;
+    }
+    .box_about_shop{
+        display:flex;
+        flex-direction:column;
+    }
+    .ticket_about_shop{
+        display:flex;
+        margin-top:16px;
+    }
+    .ticket_about_shop .fa-circle-check{
+        font-size:24px;
+        color:green;
+    }
+    .about_left {
+        display: flex;
+        align-items: center;
+    }
+    .about_right {
+        margin-left: 16px;
+        font-size: 16px;
+        display:flex;
+        flex-direction:column;
+    }
+    .text_about_main {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: system-ui;
+    }
+    .text_about {
+        font-size: 14px;
+        opacity: 0.8;
+    }
+    .btn_remove_cart .fa-trash-can {
+        color: red;
+        font-size: 25px;
+        cursor:pointer;
+    }
+    .btn_remove_cart .fa-trash-can:hover{
+        opacity:0.6;
+    }
+    .div_top {
+        display: flex;
+    }
+    .div_top_right{
+        display:flex;
+        justify-content:end;
+    }
+</style>
+<div id="MyCart">
+    <div class="container">
+        <div class="col-md-8">
+            <div>
+                <span class="title_text">Giỏ hàng của bạn</span>
+                <span>(Có {{productCount}} sản phẩm trong giỏ hàng của bạn)</span>
+            </div>
+            <div class="box_list_product">
+                <div class="box_product" v-for="(cart,index) in dataCart">
+                    <div class="box_image col-md-3">
+                        <img v-bind:src="cart.Product.ProductImages[0].Url" alt="Alternate Text" />
+                    </div>
+                    <div class="box_right col-md-9">
+                        <div class="div_top">
+                            <div class="div_top_left col-md-6">
+                                <div v-show="cart.Product.NewProduct" class="labelNewNew styleTogetherLabel">Hàng Mới</div>
+                            </div>
+                            <div class="div_top_right col-md-6">
+                                <div class="btn_remove_cart" v-on:click="RemoveCart(cart.Id)"><i class="fa-solid fa-trash-can"></i></div>
+                            </div>
+                        </div>
+                        <div class="div_mid">
+                            <div class="col-md-6 product_name" style="padding:0 !important;">
+                                {{cart.Product.Name}}
+                            </div>
+                            <div class="col-md-3 product_quantity">
+                                <span class="btn_quantity" v-on:click="MinusQuantity(index)">
+                                    -
+                                </span>
+                                <span>
+                                    {{cart.Quantity}}
+                                </span>
+                                <span class="btn_quantity" v-on:click="PlusQuantity(index)">
+                                    +
+                                </span>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="product_price">
+                                    {{cart.Product.StrPrice}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="div_bottom">
+                            <span class="product_code">{{cart.Product.Code}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box_description">
+                <p class="title_description">Ghi chú đơn hàng</p>
+                <textarea id="" for="Description" rows="6" class="form-control cart_description"></textarea>
+            </div>
+        </div>
+        <div class="col-md-4 cart_div_right">
+            <div style="margin-bottom:20px;">
+                @*<span class="link_btn_login">Đăng nhập</span>*@
+                <span style="font-size:16px;">Cùng Best Fashion hưởng thật nhiều ưu đãi khủng</span>
+            </div>
+            <div class="order_summary">
+                <div class="title_order">Tóm tắt đơn hàng</div>
+                <div class="div_info_order">
+                    <span>Giá trị sản phẩm:</span>
+                    <span>{{StrTotalPrice}}₫</span>
+                </div>
+                <div class="div_info_order">
+                    <span>Giá trị khuyến mãi:</span>
+                    <span>{{StrTotalPriceSale}}₫</span>
+                </div>
+                <div class="div_info_order">
+                    <span>Phí vận chuyển:</span>
+                    <span>Miễn phí</span>
+                </div>
+                <div class="div_info_order total_price">
+                    <span>Tổng tiền:</span>
+                    <span>{{StrTotalPayment}}₫</span>
+                </div>
+                <div>
+                    <div class="btn_order" v-on:click="GoToOrder()">Tiến hành đặt hàng</div>
+                </div>
+                <div>
+                    <div class="btn_buy_more" v-on:click="BuyNewProduct()">Mua thêm sản phẩm</div>
+                </div>
+                <div class="text_description">
+                    * Chi tiêu tích lũy được ghi nhận vào tài khoản của bạn khi đơn hàng thành công. Vui lòng đăng nhập để được tích lũy.
+                </div>
+            </div>
+            <div class="box_about_shop">
+                <div class="ticket_about_shop">
+                    <div class="about_left">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="about_right">
+                        <span class="text_about_main">Miễn phí giao hàng toàn quốc</span>
+                        <span class="text_about">(Cho hóa đơn từ 300.000đ)</span>
+                    </div>
+                </div>
+                <div class="ticket_about_shop">
+                    <div class="about_left">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="about_right">
+                        <span class="text_about_main">Đổi trả dễ dàng</span>
+                        <span class="text_about">(Đổi trả 30 ngày cho giày và túi)</span>
+                    </div>
+                </div>
+                <div class="ticket_about_shop">
+                    <div class="about_left">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="about_right">
+                        <span class="text_about_main">Tổng đài bán hàng 1900 1000</span>
+                        <span class="text_about">(Miễn phí từ 8h00 - 21:00 mỗi ngày)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/Cart/MyCart.js"></script>
+}
+

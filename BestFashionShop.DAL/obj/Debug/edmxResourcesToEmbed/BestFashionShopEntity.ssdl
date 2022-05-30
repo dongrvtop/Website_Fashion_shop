@@ -56,14 +56,36 @@
     <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
     <Property Name="Status" Type="bit" />
   </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ProductQuantity" Type="int" Nullable="false" />
+    <Property Name="OrderId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ShipName" Type="nvarchar(max)" />
+    <Property Name="ShipAddress" Type="nvarchar(max)" />
+    <Property Name="ShipPhone" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+    <Property Name="PaymentType" Type="int" />
+    <Property Name="PaymentPrice" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
   <EntityType Name="Product">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Code" Type="varchar" MaxLength="10" />
-    <Property Name="MetaTitle" Type="varchar(max)" />
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
     <Property Name="PromotionPrice" Type="decimal" Precision="18" Scale="0" />
@@ -74,10 +96,10 @@
     <Property Name="CreateBy" Type="varchar" MaxLength="20" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
-    <Property Name="Status" Type="bit" />
-    <Property Name="TopHot" Type="datetime" />
     <Property Name="CollectionId" Type="int" />
     <Property Name="NewProduct" Type="bit" />
+    <Property Name="PromotionPercent" Type="char" MaxLength="4" />
+    <Property Name="TopHot" Type="bit" />
   </EntityType>
   <EntityType Name="ProductCategory">
     <Key>
@@ -85,18 +107,11 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" />
-    <Property Name="MetaTitle" Type="nvarchar(max)" />
-    <Property Name="ParentId" Type="bigint" />
-    <Property Name="DisplayOrder" Type="int" />
-    <Property Name="SeoTitle" Type="nvarchar(max)" />
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="CreateBy" Type="varchar" MaxLength="20" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
-    <Property Name="MetaKeywords" Type="nvarchar(max)" />
     <Property Name="Description" Type="nvarchar(max)" />
-    <Property Name="Status" Type="bit" />
-    <Property Name="ShowOnHome" Type="bit" />
     <Property Name="CategoryId" Type="int" />
   </EntityType>
   <EntityType Name="ProductImage">
@@ -131,6 +146,16 @@
     <Property Name="ModifiedBy" Type="varchar" MaxLength="20" />
     <Property Name="OpenTime" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Id" />
@@ -146,6 +171,7 @@
     <Property Name="Birthday" Type="datetime" />
     <Property Name="Name" Type="nvarchar(max)" />
     <Property Name="RoleId" Type="int" />
+    <Property Name="DeliveryAddress" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Ward">
     <Key>
@@ -188,6 +214,42 @@
       </Principal>
       <Dependent Role="District">
         <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_OrderDetail_Orders">
+    <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_OrderDetail_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Orders_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -293,11 +355,14 @@
     <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="District" EntityType="Self.District" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MyCollection" EntityType="Self.MyCollection" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ShowRoom" EntityType="Self.ShowRoom" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ward" EntityType="Self.Ward" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="fk_Cart_Id_Product" Association="Self.fk_Cart_Id_Product">
@@ -311,6 +376,18 @@
     <AssociationSet Name="fk_District_Id_City" Association="Self.fk_District_Id_City">
       <End Role="City" EntitySet="City" />
       <End Role="District" EntitySet="District" />
+    </AssociationSet>
+    <AssociationSet Name="fk_OrderDetail_Orders" Association="Self.fk_OrderDetail_Orders">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="fk_OrderDetail_Product" Association="Self.fk_OrderDetail_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Orders_User" Association="Self.fk_Orders_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Orders" EntitySet="Orders" />
     </AssociationSet>
     <AssociationSet Name="fk_Product_Id_MyCollection" Association="Self.fk_Product_Id_MyCollection">
       <End Role="MyCollection" EntitySet="MyCollection" />

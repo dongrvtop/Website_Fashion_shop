@@ -1,4 +1,5 @@
 ﻿using BestFashionShop.DAL;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BestFashionShop.Controllers.ControllerApi
         private BestFashionShopEntities db = new BestFashionShopEntities();
         [HttpGet]
         [AcceptVerbs("GET","POST")]
-        public async Task<List<MyCollectionDTO>> GetAllMyCollection()
+        public async Task<string> GetAllMyCollection()
         {
             try
             {
@@ -32,7 +33,7 @@ namespace BestFashionShop.Controllers.ControllerApi
                     ModifiedBy = s.ModifiedBy,
                     Status = s.Status
                 }).ToList<MyCollectionDTO>();
-                return lstItem;
+                return JsonConvert.SerializeObject(lstItem);
             }
             catch (Exception ex)
             {

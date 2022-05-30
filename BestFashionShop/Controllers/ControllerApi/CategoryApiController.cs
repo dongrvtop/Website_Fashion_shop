@@ -37,7 +37,7 @@ namespace BestFashionShop.Controllers.ControllerApi
             catch (Exception ex)
             {
                 return null;
-                throw;
+                throw ex;
             }
         }
         [HttpGet]
@@ -64,7 +64,7 @@ namespace BestFashionShop.Controllers.ControllerApi
             catch (Exception ex)
             {
                 return null;
-                throw;
+                throw ex;
             }
         }
         [HttpPost]
@@ -88,7 +88,7 @@ namespace BestFashionShop.Controllers.ControllerApi
             catch (Exception ex)
             {
                 return 0;
-                throw;
+                throw ex;
             }
         }
 

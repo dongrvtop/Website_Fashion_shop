@@ -18,6 +18,7 @@ namespace BestFashionShop.DAL
         public User()
         {
             this.Carts = new HashSet<Cart>();
+            this.Orders = new HashSet<Order>();
         }
     
         public int Id { get; set; }
@@ -31,9 +32,12 @@ namespace BestFashionShop.DAL
         public Nullable<System.DateTime> Birthday { get; set; }
         public string Name { get; set; }
         public Nullable<int> RoleId { get; set; }
+        public string DeliveryAddress { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Carts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual Role Role { get; set; }
     }
 }

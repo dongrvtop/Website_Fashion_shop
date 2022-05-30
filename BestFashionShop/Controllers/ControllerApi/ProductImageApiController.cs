@@ -36,7 +36,7 @@ namespace BestFashionShop.Controllers.ControllerApi
         }
         [HttpGet]
         [AcceptVerbs("GET","POST")]
-        public async Task<string> GetAllProductImageByProductId(int ProductId)
+        public async Task<List<ProductImageDTO>> GetAllProductImageByProductId(int? ProductId)
         {
             try
             {
@@ -47,7 +47,8 @@ namespace BestFashionShop.Controllers.ControllerApi
                     DefaultImage = s.DefaultImage,
                     ProductId = s.ProductId
                 }).ToList<ProductImageDTO>();
-                return JsonConvert.SerializeObject(result);
+                //return JsonConvert.SerializeObject(result);
+                return result;
             }
             catch (Exception ex)
             {

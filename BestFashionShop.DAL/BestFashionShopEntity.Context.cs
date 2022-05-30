@@ -30,11 +30,14 @@ namespace BestFashionShop.DAL
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<MyCollection> MyCollections { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<ShowRoom> ShowRooms { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Ward> Wards { get; set; }
     }

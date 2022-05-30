@@ -1,4 +1,5 @@
 ﻿using BestFashionShop.DAL;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BestFashionShop.Controllers.ControllerApi
         private BestFashionShopEntities db = new BestFashionShopEntities();
         [HttpGet]
         [AcceptVerbs("GET","POST")]
-        public async Task<List<ProductCategoryDTO>> GetAllProductCategory()
+        public async Task<string> GetAllProductCategory()
         {
             try
             {
@@ -22,21 +23,14 @@ namespace BestFashionShop.Controllers.ControllerApi
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    MetaTitle = s.MetaTitle,
-                    ParentId = s.ParentId,
-                    DisplayOrder = s.DisplayOrder,
-                    SeoTitle = s.SeoTitle,
                     CreateDate = s.CreateDate,
                     CreateBy = s.CreateBy,
                     ModifiedDate = s.ModifiedDate,
                     ModifiedBy = s.ModifiedBy,
-                    MetaKeywords = s.MetaKeywords,
                     Description = s.Description,
-                    Status = s.Status,
-                    ShowOnHome = s.ShowOnHome,
                     CategoryId = s.CategoryId
                 }).ToList<ProductCategoryDTO>();
-                return listItem;
+                return JsonConvert.SerializeObject(listItem);
             }
             catch (Exception ex)
             {
@@ -54,18 +48,11 @@ namespace BestFashionShop.Controllers.ControllerApi
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    MetaTitle = s.MetaTitle,
-                    ParentId = s.ParentId,
-                    DisplayOrder = s.DisplayOrder,
-                    SeoTitle = s.SeoTitle,
                     CreateDate = s.CreateDate,
                     CreateBy = s.CreateBy,
                     ModifiedDate = s.ModifiedDate,
                     ModifiedBy = s.ModifiedBy,
-                    MetaKeywords = s.MetaKeywords,
                     Description = s.Description,
-                    Status = s.Status,
-                    ShowOnHome = s.ShowOnHome,
                     CategoryId = s.CategoryId
                 });
                 return (ProductCategoryDTO)item;
@@ -85,16 +72,9 @@ namespace BestFashionShop.Controllers.ControllerApi
                 ProductCategory newItem = new ProductCategory();
                 newItem.Id = productCategory.Id;
                 newItem.Name = productCategory.Name;
-                newItem.MetaTitle = productCategory.MetaTitle;
-                newItem.ParentId = productCategory.ParentId;
-                newItem.DisplayOrder = productCategory.DisplayOrder;
-                newItem.SeoTitle = productCategory.SeoTitle;
                 newItem.CreateDate = DateTime.Now;
                 newItem.CreateBy = productCategory.CreateBy;
-                newItem.MetaKeywords = productCategory.MetaKeywords;
                 newItem.Description = productCategory.Description;
-                newItem.Status = productCategory.Status;
-                newItem.ShowOnHome = productCategory.ShowOnHome;
                 newItem.CategoryId = productCategory.CategoryId;
                 db.ProductCategories.Add(newItem);
                 await db.SaveChangesAsync();
@@ -118,16 +98,9 @@ namespace BestFashionShop.Controllers.ControllerApi
                 {
                     item.Id = productCategory.Id;
                     item.Name = productCategory.Name;
-                    item.MetaTitle = productCategory.MetaTitle;
-                    item.ParentId = productCategory.ParentId;
-                    item.DisplayOrder = productCategory.DisplayOrder;
-                    item.SeoTitle = productCategory.SeoTitle;
                     item.ModifiedDate = productCategory.ModifiedDate;
                     item.ModifiedBy = productCategory.ModifiedBy;
-                    item.MetaKeywords = productCategory.MetaKeywords;
                     item.Description = productCategory.Description;
-                    item.Status = productCategory.Status;
-                    item.ShowOnHome = productCategory.ShowOnHome;
                     item.CategoryId = productCategory.CategoryId;
                     await db.SaveChangesAsync();
                     return 1;

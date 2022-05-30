@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
+    <Compile Include="FunctionCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

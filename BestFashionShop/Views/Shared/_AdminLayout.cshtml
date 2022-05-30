@@ -19,7 +19,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Hệ thống quản trị</div>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Trang chủ
                         </a>
@@ -31,8 +31,9 @@
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" asp-controller="User" asp-action="Index">Danh sách</a>
-                                <a class="nav-link" asp-controller="User" asp-action="Create">Thêm mới</a>
+                                <span class="nav-link item_link">@Html.ActionLink("Danh sách", "ManageUser", "User", new { area = "" }, null)</span>
+                                <span class="nav-link item_link">@Html.ActionLink("Thêm mới", "DetailUser", "User", new { area = "" }, null)</span>
+                                @*<a class="nav-link" asp-controller="User" asp-action="DetailUser">Thêm mới</a>*@
                             </nav>
                         </div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -48,9 +49,18 @@
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" asp-controller="Product" asp-action="Index">Danh sách</a>
+                                        @*<a class="nav-link" asp-controller="Product" asp-action="ManageProduct">Danh sách</a>*@
+                                        <span class="nav-link item_link">@Html.ActionLink("Danh sách", "ManageProduct", "Product", new { area = "" }, null)</span>
+                                    </nav>
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        @*<a class="nav-link" asp-controller="Product" asp-action="ManageProduct">Danh sách</a>*@
+                                        <span class="nav-link item_link">@Html.ActionLink("Thêm mới", "CreateProduct", "Product", new { area = "" }, null)</span>
                                     </nav>
                                 </div>
+                                <a class="nav-link collapsed" href="/Orders/ManageOrders">
+                                    Đơn hàng
+                                    @*@Html.ActionLink("Đơn hàng", "ManageOrders", "Orders", new { area = "" }, null)*@
+                                </a>
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                     Error
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -60,14 +70,14 @@
                                 </div>
                             </nav>
                         </div>
-                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        @*<div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Charts
                         </a><a class="nav-link" href="tables.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Tables
-                        </a>
+                        </a>*@
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -97,7 +107,14 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="~/Scripts/Shared/scripts.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
+    <script type="text/javascript" src="~/Scripts/slick/slick.js"></script>
+    <script type="text/javascript" src="~/Scripts/slick/slick.min.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script src="~/Scripts/allFontAweSome.js"></script>
+    @*<script src="~/Scripts/Product/ListProduct.js"></script>*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "DetailUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .box_url_image {
+        display: flex;
+        box-sizing: border-box;
+    }
+
+        .box_url_image div {
+            padding: 0 !important;
+        }
+
+    .btn_delete_url {
+        cursor: pointer;
+        padding: 4px 12px;
+        border: 1px solid white;
+        color: white;
+        background: red;
+        border-radius: 4px;
+    }
+
+        .btn_delete_url:hover {
+            border: 1px solid red;
+            color: red;
+            background: white;
+        }
+
+    .box_btn_delete {
+        display: flex;
+        align-items: start;
+    }
+
+    .btn_add_image {
+        cursor: pointer;
+        padding: 4px 12px;
+        border: 1px solid white;
+        color: white;
+        background: green;
+        border-radius: 4px;
+    }
+
+        .btn_add_image:hover {
+            border: 1px solid green;
+            color: green;
+            background: white;
+        }
+
+    .box_btn_add_image {
+        display: flex;
+    }
+
+    .border-error {
+        border: 1px solid red;
+    }
+
+    .border-success {
+        border: 1px solid #ced4da;
+    }
+
+    .btn_update {
+        margin-right: 16px;
+    }
+    .select_role {
+        padding: 6px;
+        width: 120px;
+        border-radius: 4px;
+        margin-left:16px;
+    }
+</style>
+<div id="AddOrUpdateUser" class="container-fluid">
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">{{TitlePage}}</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" href="https://localhost:44305/User/ManageUser">Về danh sách</a>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-8">
+                <form asp-action="Create" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label for="role" class="control-label">Quyền</label>
+                        <select v-model="RoleId" class="select_role">
+                            <option value="0"></option>
+                            <option v-bind:value="role.Id" v-for="role in lstRole">{{role.Name}}</option>
+                        </select>
+                        <span asp-validation-for="role" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="UserName" class="control-label">Tên đăng nhập</label>
+                        <input for="UserName" v-model="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label">Email</label>
+                        <input for="email" v-model="Email" class="form-control" />
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label">Mật khẩu</label>
+                        <input for="password" v-model="Password" type="text" class="form-control" />
+                        <span asp-validation-for="password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phonenum" class="control-label">Số điện thoại</label>
+                        <input for="phonenum" class="form-control" v-model="Phone"/>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday" class="control-label">Ngày sinh</label>
+                        <input id="txt_details" for="birthday" class="form-control" v-model="Birthday"/>
+                        <span asp-validation-for="birthday" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="display:flex;justify-content:end;">
+                        <input type="button" value="Thêm mới" class="btn btn-primary" v-if="!RoleId" v-on:click="Submit(0)" />
+                        <input type="button" value="Cập nhật" class="btn btn-primary btn_update" v-if="RoleId" v-on:click="Submit(1)" />
+                        <input type="button" value="Xóa tài khoản" class="btn btn-danger btn_delete_product" v-if="RoleId" v-on:click="Submit(2)" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            vmDetailUser.getListRole();
+        })
+    </script>
+    <script src="~/Scripts/User/DetailUser.js"></script>
+}
+

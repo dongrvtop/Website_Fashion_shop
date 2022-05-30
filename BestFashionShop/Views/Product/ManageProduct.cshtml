@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "ManageProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    #ManageProduct tr th, #ManageProduct tr td{
+        padding:8px 16px;
+    }
+    .btn_edit{
+        color:green;
+        cursor:pointer;
+        text-decoration:none;
+    }
+    .btn_edit:hover{
+        text-decoration:underline;
+        opacity:0.7;
+    }
+    .btn_delete{
+        color:red;
+        cursor:pointer;
+    }
+    .btn_delete:hover {
+        text-decoration: underline;
+        opacity: 0.7;
+    }
+    #ManageProduct{
+        padding:2em 4em;
+    }
+    .box_paging{
+        padding:8px;
+    }
+    .btn_trans_page {
+        cursor: pointer;
+        border: solid 1px black;
+        height:40px;
+        padding:8px 16px;
+        border-radius:4px;
+    }
+    .input_currentpage{
+        width:50px;
+        height:40px;
+        border-radius:5px;
+        text-align:center;
+    }
+    .footer_page{
+        display:flex;
+    }
+    .page_table_row_count{
+        padding:8px;
+        display:flex;
+        justify-content:flex-end;
+    }
+    .page_table_row_count select{
+        min-height:40px;
+        min-width:80px;
+        border-radius:4px;
+    }
+    .box_statistic{
+        padding:8px;
+    }
+    th {
+        background: cornflowerblue;
+        color: white;
+    }
+</style>
+<div id="ManageProduct">
+    <h1>Quản lý sản phẩm</h1>
+    <table border="1" style="width:1760px;">
+        <tr>
+            <th>ID</th>
+            <th>Tên sản phẩm</th>
+            <th>Mã code</th>
+            <th>Loại sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá tiền</th>
+            <th>Chi tiết</th>
+            <th>Sp mới</th>
+            <th>Sp hot</th>
+            <th>Giảm giá</th>
+            <th>Hình ảnh</th>
+            <th>Action</th>
+        </tr>
+        <tr v-for="(product,index) in DataListProduct">
+            <td>{{product.Id}}</td>
+            <td>{{product.Name}}</td>
+            <td>{{product.Code}}</td>
+            <td>{{product.CategoryName}}</td>
+            <td>{{product.Quantity}}</td>
+            <td>{{product.StrPrice}}</td>
+            <td>{{product.Detail}}</td>
+            <td><input type="checkbox" class="disabled" name="newProduct" v-model="product.NewProduct" /></td>
+            <td><input type="checkbox" class="disabled" name="newProduct" v-model="product.TopHot" /></td>
+            <td>{{product.PromotionPercent ? product.PromotionPercent : 0}}%</td>
+            <td>
+                <img v-for="(image,imgIdx) in product.ProductImages" v-if="imgIdx < 1" v-bind:src="image.Url" alt="Alternate Text" width="120px"/>
+                <span>({{product.ProductImages.length}} ảnh)</span>
+            </td>
+            <td><a class="btn_edit" v-bind:href="'https://localhost:44305/Product/CreateProduct?Id='+product.Id">Sửa</a> | <span class="btn_delete" v-on:click="DeleteProduct(product.Id)">Xóa</span></td>
+        </tr>
+    </table>
+    <div class="footer_page">
+        <div class="box_statistic col-md-5">
+            {{pageStart}} - {{pageEnd}}/{{totalRowCount}}
+        </div>
+        <div class="box_paging col-md-5">
+            <span v-on:click="FirstPage()" class="btn_trans_page"><<</span>
+            <span v-on:click="PrePage()" class="btn_trans_page"><</span>
+            <input type="text" name="name" value="" v-model="currentPage" class="input_currentpage" />
+            <span v-on:click="NextPage()" class="btn_trans_page">></span>
+            <span v-on:click="LastPage()" class="btn_trans_page">>></span>
+        </div>
+        <div class="page_table_row_count col-md-2">
+            <span style="line-height:40px;margin-right:16px;">Page size</span>
+            <select v-model="pageSize">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/Product/ManageProduct.js"></script>
+}
+

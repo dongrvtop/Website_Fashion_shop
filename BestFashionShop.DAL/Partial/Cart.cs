@@ -17,5 +17,6 @@ namespace BestFashionShop.DAL
         public Nullable<int> UserId { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<decimal> Price { get; set; }
+        public ProductDTO Product { get; set; }
     }
 }

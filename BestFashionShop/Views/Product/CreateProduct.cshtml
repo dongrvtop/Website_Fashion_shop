@@ -5,7 +5,7 @@
 }
 
 @*@model eShopSolution.ViewModels.Catalog.Products.ProductCreateRequest*@
-@section Scripts{
+@*@section Scripts{
     <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
     <script>
         ClassicEditor
@@ -19,16 +19,73 @@
                 console.error(err.stack);
             });
     </script>
-}
-<div class="container-fluid">
-    <h1 class="mt-4">Tạo mới người dùng</h1>
+}*@
+<style>
+    .box_url_image {
+        display: flex;
+        box-sizing: border-box;
+    }
+
+        .box_url_image div {
+            padding: 0 !important;
+        }
+
+    .btn_delete_url {
+        cursor: pointer;
+        padding: 4px 12px;
+        border: 1px solid white;
+        color: white;
+        background: red;
+        border-radius: 4px;
+    }
+
+        .btn_delete_url:hover {
+            border: 1px solid red;
+            color: red;
+            background: white;
+        }
+
+    .box_btn_delete {
+        display: flex;
+        align-items: start;
+    }
+
+    .btn_add_image {
+        cursor: pointer;
+        padding: 4px 12px;
+        border: 1px solid white;
+        color: white;
+        background: green;
+        border-radius: 4px;
+    }
+
+        .btn_add_image:hover {
+            border: 1px solid green;
+            color: green;
+            background: white;
+        }
+
+    .box_btn_add_image {
+        display: flex;
+    }
+    .border-error {
+        border: 1px solid red;
+    }
+    .border-success {
+        border: 1px solid #ced4da;
+    }
+    .btn_update{
+        margin-right:16px;
+    }
+</style>
+<div id="AddOrUpdateProduct" class="container-fluid">
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Tạo mới sản phẩm</li>
+        <li class="breadcrumb-item active">{{TitlePage}}</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-action="Index" asp-controller="User">Về danh sách</a>
+            <a class="btn btn-success" href="https://localhost:44305/Product/ManageProduct">Về danh sách</a>
         </div>
 
         <div class="card-body">
@@ -36,62 +93,110 @@
                 <form asp-action="Create" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
+                        <label for="Category" class="control-label">Loại sản phẩm</label>
+                        <select v-model="CategoryId">
+                            <option value="0"></option>
+                            <option v-bind:value="cate.Id" v-for="cate in lstProductCategory">{{cate.Name}}</option>
+                        </select>
+                        @*<input for="Name" v-model="ProductName" class="form-control" />*@
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Collection" class="control-label">Collection</label>
+                        <select v-model="CollectionId">
+                            <option value="0"></option>
+                            <option v-bind:value="coll.Id" v-for="coll in lstCollection">{{coll.Name}}</option>
+                        </select>
+                        <span asp-validation-for="Collection" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label for="Name" class="control-label">Tên sản phẩm</label>
-                        <input for="Name" class="form-control" />
+                        <input for="Name" v-model="ProductName" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label for="ProductCode" class="control-label">Mã code sản phẩm</label>
+                        <input for="ProductCode" v-model="ProductCode" class="form-control" />
+                        <span asp-validation-for="ProductCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label for="Price" class="control-label">Giá sản phẩm</label>
-                        <input for="Price" type="number" class="form-control" />
+                        <input for="Price" v-model="ProductPrice" type="number" class="form-control" v-model="ProductPrice" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
+                    @*<div class="form-group">
+                            <label for="OriginalPrice" class="control-label">Giá nhập vào</label>
+                            <input for="OriginalPrice" type="number" class="form-control" />
+                            <span asp-validation-for="OriginalPrice" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group">
-                        <label for="OriginalPrice" class="control-label">Giá nhập vào</label>
-                        <input for="OriginalPrice" type="number" class="form-control" />
-                        <span asp-validation-for="OriginalPrice" class="text-danger"></span>
+                        <label for="Quantity" class="control-label">Số lượng</label>
+                        <input for="Quantity" type="number" class="form-control" v-model="ProductQuantity" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="Stock" class="control-label">Stock</label>
-                        <input for="Stock" type="number" class="form-control" />
-                        <span asp-validation-for="Stock" class="text-danger"></span>
-                    </div>
-
                     <div class="form-group">
                         <label for="Description" class="control-label">Description</label>
-                        <textarea for="Description" rows="5" class="form-control"></textarea>
+                        <textarea for="Description" rows="5" class="form-control" v-model="ProductDescription"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="Details" class="control-label">Chi tiết</label>
-                        <textarea id="txt_details" for="Details" rows="35" class="form-control"></textarea>
+                        <textarea id="txt_details" for="Details" rows="20" class="form-control" v-model="ProductDetail"></textarea>
                         <span asp-validation-for="Details" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="SeoDescription" class="control-label">Seo Description</label>
-                        <input for="SeoDescription" class="form-control" />
-                        <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                        <label for="PromotionPercent" class="control-label">Phần trăm giảm giá</label>
+                        <input for="PromotionPercent" class="form-control" v-model="PromotionPercent" />
+                        <span asp-validation-for="PromotionPercent" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="SeoTitle" class="control-label">Seo Title</label>
-                        <input for="SeoTitle" class="form-control" />
-                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
+                        <input type="checkbox" for="newProduct" class="" v-model="IsNewProduct" />
+                        <label for="newProduct" class="control-label">Sản phẩm mới</label>
                     </div>
                     <div class="form-group">
-                        <label for="SeoAlias" class="control-label">Seo Alias</label>
-                        <input for="SeoAlias" class="form-control" />
-                        <span asp-validation-for="SeoAlias" class="text-danger"></span>
+                        <input type="checkbox" for="hotProduct" class="" v-model="IsHotProduct" />
+                        <label for="hotProduct" class="control-label">Sản phẩm hot</label>
                     </div>
+                    @*<div class="form-group">
+                            <label for="ThumbnailImage" class="control-label">Images</label>
+                            <input for="ThumbnailImage" type="file" class="form-control" />
+                            <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group">
                         <label for="ThumbnailImage" class="control-label">Images</label>
-                        <input for="ThumbnailImage" type="file" class="form-control" />
+                        <div class="box_url_image" v-for="(img, idx) in lstUrlImage">
+                            <div class="col-md-9">
+                                <input for="ThumbnailImage" type="text" v-model="img.Url" class="form-control" />
+                            </div>
+                            <div class="col-md-2" style="margin-left:16px;">
+                                <input type="checkbox" name="" value="" v-model="img.DefaultImage" />
+                                <label style="line-height:38px;">Defaul Image</label>
+                            </div>
+                            <div class="col-md-1 box_btn_delete">
+                                <span class="btn_delete_url" v-on:click="DeleteUrlImage(idx)">Xóa</span>
+                            </div>
+                        </div>
+                        <div class="box_btn_add_image">
+                            <span class="btn_add_image" v-on:click="AddUrlImage()">Thêm ảnh</span>
+                        </div>
                         <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                    <div class="form-group" style="display:flex;justify-content:end;">
+                        <input type="button" value="Thêm mới" class="btn btn-primary" v-if="!ProductId" v-on:click="Submit(0)"/>
+                        <input type="button" value="Cập nhật" class="btn btn-primary btn_update" v-if="ProductId" v-on:click="Submit(1)" />
+                        <input type="button" value="Xóa sản phẩm" class="btn btn-danger btn_delete_product" v-if="ProductId" v-on:click="Submit(2)" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            vmCreateProduct.getProductCategory();
+            vmCreateProduct.getCollection();
+        })
+    </script>
+    <script src="~/Scripts/Product/CreateProduct.js"></script>
+}

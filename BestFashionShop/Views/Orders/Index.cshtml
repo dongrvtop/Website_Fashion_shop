@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #OrderIndex {
+        padding: 6em 0;
+    }
+
+    .order_box_left {
+        padding: 2em 4em 2em 0;
+    }
+
+    .order_box_right {
+        padding: 2em 0 2em 4em;
+    }
+
+    .title_shop_name {
+        color: red;
+        font-size: 46px;
+        font-weight: 500;
+        font-family: emoji;
+    }
+
+    .order_box_left {
+        border-right: solid 1px #d9d9d9;
+    }
+
+    .input_info_delivery {
+        height: 50px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        padding: 8px;
+        font-size: 17px;
+    }
+
+    .input_email {
+        width: 70%;
+    }
+
+    .input_phone {
+        width: 28%;
+    }
+
+    .input_full {
+        min-width: 100%;
+    }
+
+    .box_input {
+        padding: 8px 0;
+    }
+
+    .text_title_delivery {
+        margin-top: 4em;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 2em;
+    }
+
+    .text_title_type_delivery {
+        margin-top: 2em;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 1em;
+    }
+
+    .box_type_delivery {
+        border: 1px solid #d9d9d9;
+        padding: 2em 2em;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .box_btn_order {
+        padding: 2em 0;
+        display: flex;
+        justify-content: flex-end;
+        border-bottom: 1px solid #d9d9d9;
+    }
+
+    .btn_order {
+        color: white;
+        background: #338dbc;
+        padding: 1.5em 2em;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 17px;
+    }
+
+        .btn_order:hover {
+            background: #286f94;
+        }
+
+    input:focus {
+        box-shadow: 0 0 0 2px #338dbc;
+        outline: none;
+    }
+
+    .container {
+        width: 1300px;
+    }
+
+    .item_order {
+        display: flex;
+        padding: 2em 0;
+        border-bottom: 1px solid #d9d9d9;
+    }
+
+    .item_info_order {
+        display: flex;
+        flex-direction: column;
+        padding: 2em 0;
+        border-bottom: 1px solid #d9d9d9;
+        font-size: 16px;
+    }
+
+    .item_info_order_no_border {
+        display: flex;
+        flex-direction: column;
+        padding: 2em 0;
+    }
+
+    .box_left {
+        width: 15%;
+        position: relative;
+    }
+
+    .box_image {
+        max-width: 4.6em;
+        height: 4.6em;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #d9d9d9;
+    }
+
+        .box_image img {
+            width: 100%;
+        }
+
+    .box_infor {
+        width: 85%;
+        display: flex;
+        justify-content: space-between;
+        padding: 1em 1.5em 0 1.5em;
+        font-size: 16px;
+    }
+
+    .quantity_prod {
+        background: rgba(153,153,153,0.9);
+        color: white;
+        font-size: 0.85714em;
+        font-weight: 500;
+        white-space: nowrap;
+        padding: 0.15em 0.65em;
+        z-index: 2;
+        position: absolute;
+        right: -2px;
+        top: -10px;
+        border-radius: 50%;
+    }
+
+    .title_delivery_type {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+
+    .total_price {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .trans_price {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+    }
+
+    .money_type {
+        margin-right: 0.5em;
+        color: #969696;
+    }
+
+    .total_money {
+        font-size: 24px;
+    }
+</style>
+<div id="OrderIndex">
+    <div class="container">
+        <div class="col-md-7 order_box_left">
+            <h1 class="title_shop_name">BEST FASHION</h1>
+            <div class="info_delivery">
+                <div class="text_title_delivery">Thông tin giao hàng</div>
+                <div class="box_input">
+                    <input type="text" name="name" value="" v-model="ShipName" placeholder="Họ và tên" class="input_info_delivery input_full" />
+                </div>
+                <div style="display:flex;justify-content:space-between;" class="box_input">
+                    <input type="text" name="name" value="" v-model="ShipEmail" placeholder="Email" class="input_email input_info_delivery" />
+                    <input type="text" name="name" value="" v-model="ShipPhone" placeholder="Số điện thoại" class="input_phone input_info_delivery" />
+                </div>
+                <div class="box_input">
+                    <input type="text" name="name" value="" v-model="ShipAddress" placeholder="Địa chỉ" class="input_info_delivery input_full" />
+                </div>
+            </div>
+            <div class="info_delivery">
+                <div class="text_title_type_delivery">Phương thức vận chuyển</div>
+                <div class="box_type_delivery">
+                    <div style="font-size:16px;color:blue;">
+                        Giao hàng tiêu chuẩn
+                    </div>
+                    <div style="font-size:16px;color:blue;">
+                        0đ
+                    </div>
+                </div>
+            </div>
+            <div class="info_delivery">
+                <div class="text_title_type_delivery">Phương thức thanh toán</div>
+                <div class="box_type_delivery">
+                    <div style="font-size:18px;color:blue;">
+                        <img src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=1" alt="Alternate Text" style="margin-right:16px;" />
+                        Thanh toán khi nhận hàng
+                    </div>
+                </div>
+            </div>
+            <div class="box_btn_order">
+                <span class="btn_order" v-on:click="Submit()">Hoàn tất đơn hàng</span>
+            </div>
+        </div>
+        <div class="col-md-5 order_box_right">
+            <div class="item_order" v-for="prod in dataCart">
+                <div class="box_left">
+                    <div class="box_image" v-for="imgp in prod.Product.ProductImages">
+                        <img v-bind:src="imgp.Url" alt="Alternate Text" />
+                        <span class="quantity_prod">{{prod.Quantity}}</span>
+                    </div>
+                </div>
+                <div class="box_infor">
+                    <div>
+                        {{prod.Product.Name}}
+                    </div>
+                    <div>
+                        {{prod.Product.StrPrice}}
+                    </div>
+                </div>
+            </div>
+            <div class="item_info_order">
+                <div class="title_delivery_type">Giao hàng tiêu chuẩn</div>
+                <div class="total_price">
+                    <div>
+                        Tổng cộng:
+                    </div>
+                    <div>
+                        {{StrTotalPrice}}
+                    </div>
+                </div>
+            </div>
+            <div class="item_info_order">
+                <div class="trans_price">
+                    <div>
+                        Tạm tính:
+                    </div>
+                    <div>
+                        {{StrTotalPrice}}
+                    </div>
+                </div>
+                <div class="trans_price">
+                    <div>
+                        Tổng khuyến mãi:
+                    </div>
+                    <div>
+                        {{StrTotalPriceSale}}
+                    </div>
+                </div>
+                <div class="trans_price">
+                    <div>
+                        Phí vận chuyển:
+                    </div>
+                    <div>
+                        Miễn phí
+                    </div>
+                </div>
+            </div>
+            <div class="item_info_order_no_border">
+                <div class="trans_price">
+                    <div>
+                        Tổng cộng:
+                    </div>
+                    <div>
+                        <span class="money_type">VND</span>
+                        <span class="total_money"> {{StrTotalPayment}}</span>
+                        <span>đ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/Orders/OrderIndex.js"></script>
+
+}

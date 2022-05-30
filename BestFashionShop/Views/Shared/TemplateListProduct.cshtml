@@ -1,31 +1,186 @@
 ﻿<style>
     .productResize{
-        padding:0 2em;
-        height:436px;
+        padding:4px 2em;
+        height:500px;
+        margin-bottom:10px;
+        display:flex;
     }
     .product_block{
         display: block;
+        position:relative;
+        width:100%;
     }
     .product_image{
-        min-height:250px;
-        height:309px;
+        min-height:400px;
+        height:80%;
+    }
+    .img_loop {
+        width: 100%;
+        border-radius: 10%;
+        transition-duration: 0.5s;
+        /* Safari & Google Chrome */
+        -webkit-transition-duration: 0.5s;
+        /* Mozilla Firefox */
+        -moz-transition-duration: 0.5s;
+        /* Opera */
+        -o-transition-duration: 0.5s;
+        /* IE 9 */
+        -ms-transition-duration: 0.5s;
+    }
+    .img_hover {
+        display: none;
+    }
+    .container {
+        width:1600px !important;
+    }
+    .pro-price{
+        font-weight:bold;
+        color: black;
+    }
+    .product_detail{
+        width:100%;
+        text-align:center;
+        padding:10px;
+    }
+    .product_name span{
+        line-height:20px;
+        font-size:14px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:initial;
+        text-transform:capitalize;
+        -webkit-line-clamp:1;
+        -webkit-box-orient:vertical;
+        color:black;
+        cursor:pointer;
+    }
+    .product_name span:hover{
+        color:red;
+        text-decoration:none;
+    }
+    .labelNewNew.styleTogetherLabel {
+        border: 1px solid #878484;
+        padding: 4px 8px;
+        margin-bottom: 5px;
+        width: fit-content;
+        border-radius:5px;
+    }
+    .styleTogetherLabel {
+        color: #2d2d2d;
+        font-size: 13px;
+        font-weight: 300;
+    }
+    .active_labe_status{
+        position:absolute;
+        left:1.5em;
+        top:12px;
+    }
+    .labelSale{
+        background:red;
+        color:white;
+        font-weight:bold;
+        padding:4px 8px;
+        border-radius:5px;
+    }
+    .active_labe_Sale{
+        position:absolute;
+        top:12px;
+        right:1.5em;
+    }
+    .product_image:hover img {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        cursor: pointer;
+    }
+    .text_product{
+        font-size:24px;
+        font-weight:bold;
+    }
+    .box_paging{
+        display:flex;
+        justify-content:flex-end;
+        padding:2em 0;
+    }
+    .input_curr_page{
+        width:60px;
+        height:40px;
+        text-align:center;
+        border:1px solid;
+    }
+    .btn_trans_page{
+        padding:8px 16px;
+        border:1px solid black;
+        cursor:pointer;
+    }
+    .btn_left{
+        border-right:none;
+    }
+    .btn_right{
+        border-left:none;
+    }
+    .page_table_row_count select{
+        min-width:80px;
+        height:40px;
+        border-radius:4px;
     }
 </style>
-<div id="ListProducts" class="" v-for="product in listProducts">
-    <div class="col-md-3 productResize">
+<div id="ListProducts" class="">
+    <div class="col-md-12" style="padding: 1em 0 4em 0;">
+        <div class="col-md-12 text-center text_product" >
+            Sản phẩm
+        </div>
+        <div class="text-center col-md-12">
+            ({{totalRowCount}} sản phẩm)
+        </div>
+    </div>
+    <div v-if="DataListProduct?.length > 0" class="productResize col-md-3" v-for="(product,index) in DataListProduct">
         <div class="product_block">
             <div class="product_image">
-                <a href="#" title="">
-                    <img src="https://product.hstatic.net/1000003969/product/kem_bb03091_1_330dcbc520504cd88d475239ef67e2d8.jpg" class="img_loop" alt="Alternate Text" />
-                    <img src="https://product.hstatic.net/1000003969/product/kem_bb03091_1_330dcbc520504cd88d475239ef67e2d8.jpg" class="img_loop img_hover" alt="Alternate Text" />
-                </a>
-            </div>
-            <div class="product_detail">
-
-            </div>
-            <div class="active_labe_status">
+                
+                    <img v-bind:src="item.Url" class="img_loop" alt="Alternate Text" v-on:mouseover="hoverImage(index)" v-on:mouseout="hoverOutImage(index)"
+                         v-for="(item, idx) in product.ProductImages" v-bind:class="{'img_hover' : !item.DefaultImage}" v-on:click="ViewDetailProduct(product.Id)" />
                 
             </div>
+            <div class="product_detail">
+                <h3 class="product_name">
+                    <span v-on:click="ViewDetailProduct(product.Id)" v-bind:title="product.Name">
+                        {{product.Name}}
+                    </span>
+                </h3>
+                <div class="box_product_price">
+                    <p class="pro-price highlight">
+                        {{product.StrPrice}}
+                    </p>
+                </div>
+            </div>
+            <div class="active_labe_status">
+                <div v-show="product.NewProduct" class="labelNewNew styleTogetherLabel">Hàng Mới</div>
+            </div>
+            <div class="active_labe_Sale">
+                <div v-show="product.PromotionPercent?.trim()" class="labelSale">Sale</div>
+                <div v-show="!product.PromotionPercent?.trim() && product.TopHot" class="labelSale">Hot</div>
+            </div>
+        </div>
+    </div>
+    <div class="box_paging col-md-12">
+        <div class="page_table_row_count col-md-2">
+            <span style="line-height:40px;margin-right:16px;">Page size</span>
+            <select v-model="pageSize">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        <div style="display:flex;">
+            <div class="btn_trans_page btn_left" style="border-radius:4px 0 0 4px;" v-on:click="FirstPage()"><i class="fa-solid fa-backward-fast"></i></div>
+            <div class="btn_trans_page btn_left" v-on:click="PrePage()"><i class="fa-solid fa-angle-left"></i></div>
+            <div><input type="text" name="name" value="" class="input_curr_page" v-model="currentPage" /></div>
+            <div class="btn_trans_page btn_right" v-on:click="NextPage()"><i class="fa-solid fa-angle-right"></i></div>
+            <div class="btn_trans_page btn_right" style="border-radius:0 4px 4px 0;" v-on:click="LastPage()"><i class="fa-solid fa-forward-fast"></i></div>
         </div>
     </div>
 </div>

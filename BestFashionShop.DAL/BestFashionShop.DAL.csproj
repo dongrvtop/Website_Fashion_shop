@@ -121,12 +121,22 @@
     <Compile Include="MyCollection.cs">
       <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetail.cs">
+      <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Partial\Cart.cs" />
     <Compile Include="Partial\Category.cs" />
     <Compile Include="Partial\MyCollection.cs" />
+    <Compile Include="Partial\Order.cs" />
+    <Compile Include="Partial\OrderDetail.cs" />
     <Compile Include="Partial\Product.cs" />
     <Compile Include="Partial\ProductCategory.cs" />
     <Compile Include="Partial\ProductImage.cs" />
+    <Compile Include="Partial\Role.cs" />
+    <Compile Include="Partial\User.cs" />
     <Compile Include="Product.cs">
       <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
     </Compile>
@@ -141,6 +151,9 @@
       <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="ShowRoom.cs">
+      <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
       <DependentUpon>BestFashionShopEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">

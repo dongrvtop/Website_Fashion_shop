@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #MyOrders tr th, #MyOrders tr td {
+        padding: 8px 16px;
+    }
+
+    .btn_edit {
+        color: green;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .btn_edit:hover {
+            text-decoration: underline;
+            opacity: 0.7;
+        }
+
+    .btn_delete {
+        color: red;
+        cursor: pointer;
+    }
+
+        .btn_delete:hover {
+            text-decoration: underline;
+            opacity: 0.7;
+        }
+
+    #MyOrders {
+        padding: 2em 4em;
+        background
+    }
+
+    .box_paging {
+        padding: 8px;
+    }
+
+    .btn_trans_page {
+        cursor: pointer;
+        border: solid 1px black;
+        height: 40px;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+    .input_currentpage {
+        width: 50px;
+        height: 40px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .footer_page {
+        /*display: flex;
+        width: 1460px;*/
+    }
+
+    .page_table_row_count {
+        padding: 8px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .page_table_row_count select {
+            min-height: 40px;
+            min-width: 80px;
+            border-radius: 4px;
+        }
+
+    .box_statistic {
+        padding: 8px;
+    }
+
+    .column_id {
+        width: 40px;
+    }
+
+    .btn_add_user {
+        padding: 8px 16px;
+        color: white;
+        background: darkturquoise;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn_add_user:hover {
+            opacity: 0.8;
+        }
+
+    .box_btn_add {
+        padding: 2em 0;
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
+    #MyOrders h1 {
+        margin-bottom: 1em;
+        margin-top: 2em;
+        margin-left: 10em;
+    }
+
+    th {
+        background: cornflowerblue;
+        color: white;
+    }
+    .box_order {
+        display: flex;
+        flex-direction: column;
+        /*border: solid 1px red;*/
+        box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+        margin-bottom: 2em;
+        border-radius: 5px;
+        background: floralwhite;
+    }
+    .box_order_top {
+        border-bottom: 1px solid rgba(0,0,0,.09);
+        display:flex;
+        justify-content:space-between;
+        padding:1em;
+    }
+    .box_order_mid {
+        border-bottom: 1px solid rgba(0,0,0,.09);
+        display: flex;
+        padding: 1em;
+        flex-direction: column;
+    }
+    .item_product {
+        display: flex;
+        margin-bottom:1em;
+    }
+    .box_order_bot {
+        display: flex;
+        padding: 1em;
+        justify-content: flex-end;
+    }
+    .OrderCode {
+        font-size: 19px;
+        font-weight: 600;
+    }
+    .delivery_type{
+        font-size:19px;
+    }
+    .delivery_type .fa-truck {
+        color: lightseagreen;
+        margin-right:8px;
+    }
+    .box_left_image {
+        width: 10%;
+        border: solid 1px gray;
+    }
+    .box_info_order{
+        width:90%;
+        display:flex;
+        flex-direction:column;
+        padding:2em 1.5em  0 2em;
+    }
+    .box_left_image img {
+        width: 100%;
+    }
+    .product_name{
+        font-size:20px;
+    }
+    .product_quantity{
+        font-size:18px;
+        margin-top:8px;
+    }
+    .btn_cancel_order{
+        color:white;
+        background:red;
+        padding:8px 16px;
+        border-radius:5px;
+        font-size:17px;
+        cursor:pointer;
+    }
+    .btn_cancel_order:hover{
+        opacity:0.5;
+    }
+    .btn_accept_product {
+        color: white;
+        background: green;
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 17px;
+        cursor: pointer;
+        margin-right:16px;
+    }
+    .btn_accept_product:hover {
+        opacity: 0.5;
+    }
+    .ship_name, .ship_address, .ship_phone{
+        font-size:17px;
+    }
+    .money_text {
+        color: #ee4d2d;
+        font-size:24px;
+        line-height:30px;
+        margin-left:16px;
+    }
+    .title_text_money{
+        font-size:20px;
+        font-weight:bold;
+        margin-left:8px;
+    }
+    .fa-money-bill-1-wave {
+        font-size: 20px;
+        color: #ee4d2d;
+    }
+</style>
+<div id="MyOrders">
+    <h1>Đơn hàng của tôi</h1>
+<div class="container">
+    <div class="box_order col-md-12" v-for="(order,index) in DataListOrder">
+        <div class="box_order_top">
+            <div class="OrderCode">
+                Mã đơn hàng: {{order.Id}}
+            </div>
+            <div class="delivery_type">
+                <i class="fa-solid fa-truck"></i>Giao hàng tiết kiệm
+                <span> | </span>
+                <span v-if="order.Status == 1" style="color:darkgray">Chờ xác nhận</span>
+                <span v-if="order.Status == 2" style="color:darkturquoise">Đang giao</span>
+                <span v-if="order.Status == 3" style="color:lawngreen">Đã nhận hàng</span>
+                <span v-if="order.Status == 4" style="color:red">Đã hủy</span>
+            </div>
+        </div>
+        <div class="box_order_mid">
+            <div class="item_product" v-for="detail in order.LstOrderDetail">
+                <div class="box_left_image">
+                    <img v-bind:src="detail.lstProductImages.find(x => x.DefaultImage).Url" alt="Alternate Text" />
+                </div>
+                <div class="box_info_order">
+                    <div class="product_name">
+                        {{detail.ProductName}}
+                    </div>
+                    <div class="product_quantity">
+                        Số lượng: {{detail.ProductQuantity}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="box_order_mid">
+            @*<div class="ship_name">
+                <b>Người nhận: </b>{{order.ShipName}}
+
+            </div>
+            <div class="ship_phone">
+                <b> Số điện thoại: </b>{{order.ShipPhone}}
+
+            </div>
+            <div class="ship_address">
+                <b> Địa chỉ nhận hàng: </b>{{order.ShipAddress}}
+            </div>
+            <div class="ship_address">
+                <b> Ngày đặt: </b>{{order.OrderDate?.slice(0,10)}}
+            </div>*@
+            <div class="text-right">
+                <i class="fa-solid fa-money-bill-1-wave"></i><b class="title_text_money">Tổng số tiền: </b> <span class="money_text">{{order.StrPaymentPrice}}</span>
+            </div>
+        </div>
+        <div class="box_order_bot">
+            <span class="btn_accept_product" v-if="order.Status == 2" v-on:click="recieveOrder(order.Id)">Xác nhận đã nhận hàng</span>
+            <span class="btn_cancel_order" v-if="order.Status == 1" v-on:click="CancelOrder(order.Id)">Hủy đơn</span>
+        </div>
+    </div>
+    <div class="footer_page">
+        <div class="box_statistic col-md-5">
+            {{pageStart}} - {{pageEnd}}/{{totalRowCount}}
+        </div>
+        <div class="box_paging col-md-5">
+            <span v-on:click="FirstPage()" class="btn_trans_page"><<</span>
+            <span v-on:click="PrePage()" class="btn_trans_page"><</span>
+            <input type="text" name="name" value="" v-model="currentPage" class="input_currentpage" />
+            <span v-on:click="NextPage()" class="btn_trans_page">></span>
+            <span v-on:click="LastPage()" class="btn_trans_page">>></span>
+        </div>
+        <div class="page_table_row_count col-md-2">
+            <span style="line-height:40px;margin-right:16px;">Page size</span>
+            <select v-model="pageSize">
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+    </div>
+</div>
+    
+</div>
+@section Scripts{
+    <script src="~/Scripts/Orders/MyOrders.js"></script>
+}
+

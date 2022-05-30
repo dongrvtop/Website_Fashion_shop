@@ -168,16 +168,23 @@
     <Compile Include="Controllers\ControllerApi\CartApiController.cs" />
     <Compile Include="Controllers\ControllerApi\CategoryApiController.cs" />
     <Compile Include="Controllers\ControllerApi\MyCollectionApiController.cs" />
+    <Compile Include="Controllers\ControllerApi\OrderApiController.cs" />
     <Compile Include="Controllers\ControllerApi\ProductApiController.cs" />
     <Compile Include="Controllers\ControllerApi\ProductCategoryApiController.cs" />
     <Compile Include="Controllers\ControllerApi\ProductImageApiController.cs" />
+    <Compile Include="Controllers\ControllerApi\UserApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MVC_Controller\AdminController.cs" />
+    <Compile Include="Controllers\MVC_Controller\CartController.cs" />
+    <Compile Include="Controllers\MVC_Controller\OrdersController.cs" />
     <Compile Include="Controllers\MVC_Controller\ProductController.cs" />
+    <Compile Include="Controllers\MVC_Controller\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\SessionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -191,6 +198,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Admin\Login.js" />
     <Content Include="Scripts\allFontAweSome.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -214,12 +222,22 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\Cart\MyCart.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Orders\DetailOrders.js" />
+    <Content Include="Scripts\Orders\ManageOrders.js" />
+    <Content Include="Scripts\Orders\MyOrders.js" />
+    <Content Include="Scripts\Orders\OrderIndex.js" />
+    <Content Include="Scripts\Product\CreateProduct.js" />
+    <Content Include="Scripts\Product\DetailProduct.js" />
+    <Content Include="Scripts\Product\ListProduct.js" />
+    <Content Include="Scripts\Product\ManageProduct.js" />
+    <Content Include="Scripts\Shared\ModalLogin.js" />
     <Content Include="Scripts\Shared\scripts.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
     <Content Include="Scripts\slick\ajax-loader.gif" />
@@ -228,6 +246,8 @@
     <Content Include="Scripts\slick\slick.css" />
     <Content Include="Scripts\slick\slick.js" />
     <Content Include="Scripts\slick\slick.min.js" />
+    <Content Include="Scripts\User\DetailUser.js" />
+    <Content Include="Scripts\User\ManageUser.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -255,6 +275,17 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Product\CreateProduct.cshtml" />
     <Content Include="Views\Shared\TemplateListProduct.cshtml" />
+    <Content Include="Views\Product\DetailProduct.cshtml" />
+    <Content Include="Views\Product\ListProduct.cshtml" />
+    <Content Include="Views\Product\ManageProduct.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\User\ManageUser.cshtml" />
+    <Content Include="Views\User\DetailUser.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Orders\ManageOrders.cshtml" />
+    <Content Include="Views\Orders\MyOrder.cshtml" />
+    <Content Include="Views\Orders\DetailOrders.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

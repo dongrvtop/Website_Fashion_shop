@@ -14,12 +14,12 @@ namespace BestFashionShop.Controllers.ControllerApi
     {
         private BestFashionShopEntities db = new BestFashionShopEntities();
         [HttpGet]
-        [AcceptVerbs("GET")]
-        public async Task<string> GetAllCarts()
+        [AcceptVerbs("GET","POST")]
+        public string GetCartByUserId(int Id)
         {
             try
             {
-                var result = db.Carts.Select(s => new CartDTO
+                var result = db.Carts.Where(x => x.UserId == Id).Select(s => new CartDTO
                 {
                     Id = s.Id,
                     ProductId = s.ProductId,
@@ -27,6 +27,37 @@ namespace BestFashionShop.Controllers.ControllerApi
                     Quantity = s.Quantity,
                     Price = s.Price
                 }).ToList<CartDTO>();
+                foreach(var cart in result)
+                {
+                    var prod = db.Products.Where(x => x.Id == cart.ProductId).Select(s => new ProductDTO
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Code = s.Code,
+                        Description = s.Description,
+                        Price = s.Price,
+                        PromotionPrice = s.PromotionPrice,
+                        Quantity = s.Quantity,
+                        CategoryId = s.CategoryId,
+                        Detail = s.Detail,
+                        CreateDate = s.CreateDate,
+                        CreateBy = s.CreateBy,
+                        ModifiedBy = s.ModifiedBy,
+                        ModifiedDate = s.ModifiedDate,
+                        TopHot = s.TopHot,
+                        CollectionId = s.CollectionId,
+                        NewProduct = s.NewProduct,
+                        PromotionPercent = s.PromotionPercent
+                    }).FirstOrDefault();
+                    prod.ProductImages = db.ProductImages.Where(x => x.ProductId == cart.ProductId && x.DefaultImage == true).Select(p => new ProductImageDTO
+                    {
+                        Id = p.Id,
+                        ProductId = p.ProductId,
+                        DefaultImage = p.DefaultImage,
+                        Url = p.Url
+                    }).ToList<ProductImageDTO>();
+                    cart.Product = prod;
+                }
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception ex)
@@ -37,40 +68,55 @@ namespace BestFashionShop.Controllers.ControllerApi
         }
         [HttpPost]
         [AcceptVerbs("POST","PUT")]
-        public async Task<int> AddCarts(CartDTO cart)
+        public async Task<int> AddOrUpdateCarts(CartDTO cart)
         {
             try
             {
-                var itemCart = db.Carts.FirstOrDefault(s => s.ProductId == cart.ProductId);
-                if(itemCart != null)
+                if(cart.Id != 0)
                 {
-                    itemCart.Quantity = cart.Quantity;
+                    var oldCart = db.Carts.FirstOrDefault(x => x.Id == cart.Id);
+                    if (oldCart != null)
+                    {
+                        oldCart.ProductId = cart.ProductId;
+                        oldCart.Quantity = cart.Quantity;
+                        oldCart.Price = cart.Quantity * db.Products.FirstOrDefault(x => x.Id == cart.ProductId).Price;
+                        await db.SaveChangesAsync();
+                        return 1;
+                    }
                 }
-                else
+                var old2Cart = db.Carts.FirstOrDefault(s => s.ProductId == cart.ProductId && s.UserId == cart.UserId);
+                if (old2Cart != null)
                 {
-                    var newItem = new Cart();
+                    old2Cart.Quantity += cart.Quantity;
+                    await db.SaveChangesAsync();
+                    return 1;
+                }
+                
+                //else
+                //{
+                var newItem = new Cart();
                     newItem.ProductId = cart.ProductId;
                     newItem.UserId = cart.UserId;
                     newItem.Quantity = cart.Quantity;
                     newItem.Price = cart.Price;
                     db.Carts.Add(newItem);
-                }
+                //}
                 await db.SaveChangesAsync();
                 return 1;
             }
             catch (Exception ex)
             {
                 return 0;
-                throw;
+                throw ex;
             }
         }
         [HttpPut]
         [AcceptVerbs("DELETE","POST")]
-        public async Task<int> DeleteCartsByProductId(int ProductId)
+        public async Task<int> DeleteCartsById(int Id)
         {
             try
             {
-                var itemCart = db.Carts.FirstOrDefault(s => s.ProductId == ProductId);
+                var itemCart = db.Carts.FirstOrDefault(s => s.Id == Id);
                 if(itemCart != null)
                 {
                     db.Carts.Remove(itemCart);
@@ -82,7 +128,7 @@ namespace BestFashionShop.Controllers.ControllerApi
             catch (Exception ex)
             {
                 return 0;
-                throw;
+                throw ex;
             }
         }
     }

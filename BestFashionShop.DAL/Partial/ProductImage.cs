@@ -12,7 +12,7 @@ namespace BestFashionShop.DAL
     }
     public class ProductImageDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Url { get; set; }
         public Nullable<bool> DefaultImage { get; set; }
         public Nullable<int> ProductId { get; set; }

@@ -1,0 +1,347 @@
+﻿
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #DetailProduct {
+        width: 100%;
+        display: flex;
+        margin-top: 70px;
+    }
+
+    .div-right {
+        padding: 4em 8em;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info_block {
+        border-bottom: 1px dotted #dfe0e1;
+    }
+
+    .active_labe_status {
+        left: 1.5em;
+        top: 12px;
+    }
+
+    .labelNewNew.styleTogetherLabel {
+        border: 1px solid #878484;
+        padding: 4px 8px;
+        margin-bottom: 5px;
+        width: fit-content;
+        border-radius: 5px;
+    }
+
+    .product_name a {
+        line-height: 20px;
+        font-size: 14px;
+        overflow: hidden;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        white-space: initial;
+        text-transform: capitalize;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        color: black;
+    }
+
+        .product_name a:hover {
+            color: red;
+            text-decoration: none;
+        }
+
+    .stocking {
+        color: black;
+    }
+
+    .out_of_stock {
+        color: red;
+    }
+
+    .btn_size_guide {
+        text-decoration: underline;
+        opacity: 0.8;
+        color: black;
+        cursor: pointer;
+        margin-left: 12px;
+    }
+
+        .btn_size_guide:hover {
+            text-decoration: none;
+        }
+
+    .title_size_guide {
+        font-weight: bold;
+    }
+
+    .btn_minus_quantity {
+        padding: 12px 24px;
+        border: 1px solid #e5e5e5;
+        cursor: pointer;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .btn_plus_quantity {
+        padding: 12px 24px;
+        border: 1px solid #e5e5e5;
+        cursor: pointer;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .quantity_product {
+        padding: 12px 36px;
+        border: 1px solid #e5e5e5;
+        border-left: none;
+        border-right: none;
+    }
+
+    .box_quantity_parent {
+        display: flex;
+    }
+
+    .btn_user {
+        color: white;
+        background: black;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn_add_carts {
+        padding: 12px;
+    }
+
+        .btn_add_carts:hover {
+            opacity: 0.6;
+        }
+
+    .btn_buy_now {
+        padding: 12px 24px;
+        margin-left: 24px;
+    }
+
+        .btn_buy_now:hover {
+            opacity: 0.6;
+        }
+
+    .box_button_for_user {
+        display: flex;
+        padding: 16px 0;
+    }
+
+    .box_border_bot {
+        border-bottom: 1px solid #e7e7e7;
+        padding: 8px 0;
+    }
+
+    .box_parameter {
+        padding: 2em 6em 2em 0;
+    }
+
+    .box_title_specifications, .box_title_policy, .box_title_instructions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .title-text {
+        font-size: 18px;
+    }
+
+    .btn_see_detail {
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .iconPolicy {
+        display: flex;
+        align-items: center;
+        margin-right: 16px;
+    }
+
+        .iconPolicy img {
+            width: 20px;
+        }
+
+    .div_policy_1 {
+        display: flex;
+    }
+
+    .infoPolicy h5 {
+        text-transform: uppercase;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .product-description-infor {
+        font-family: monospace;
+    }
+
+    .div_policy_1 {
+        margin-bottom: 16px;
+    }
+    .slider-nav img{
+        width:80px;
+    }
+    .slider-nav{
+        margin-top:24px;
+        display:flex;
+        justify-content:center;
+        padding:0 8em;
+    }
+    .slider-nav .box_image{
+        margin:0!important;
+        max-width:150px;
+        display:flex;
+        justify-content:center;
+    }
+    .slider-for .box_image {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .slider-for img{
+        /*width:100%;*/
+        max-height:800px;
+    }
+    .slide_image{
+        padding:4em 2em 4em 8em;
+    }
+    .btn_out_stock{
+        opacity:0.6;
+    }
+</style>
+<div id="DetailProduct" v-if="dataProduct != null">
+    <div class="col-md-7 slide_image">
+        <div class="slider-for">
+            <div class="box_image" v-for="image in dataProduct.ProductImages">
+                <img v-bind:src="image.Url" alt="Alternate Text" />
+            </div>
+        </div>
+        <div class="slider-nav">
+            <div class="box_image" v-for="image in dataProduct.ProductImages">
+                <img v-bind:src="image.Url" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 div-right">
+        <div class="info_block">
+            <div class="active_labe_status">
+                <div v-show="dataProduct.NewProduct" class="labelNewNew styleTogetherLabel">Hàng Mới</div>
+            </div>
+            <h3 class="product_name">
+                <a href="/products/giay-bup-be-mui-nhon-quai-ngang?color=den" v-bind:title="dataProduct.Name">
+                    {{dataProduct.Name}}
+                </a>
+            </h3>
+            <div class="product_code">
+                Mã sản phẩm:{{dataProduct.Code}}
+            </div>
+            <div class="product_status">
+                <h4 class="stocking" v-show="dataProduct.Quantity">Còn hàng</h4>
+                <h4 class="out_of_stock" v-show="!dataProduct.Quantity">Hết hàng</h4>
+            </div>
+
+        </div>
+        <div class="info_product">
+            <div class="box_product_price">
+                <p class="pro-price highlight">
+                    {{dataProduct.StrPrice}}
+                </p>
+            </div>
+            <div class="box_size_product">
+                <span class="title_size_guide">KÍCH THƯỚC</span>
+                <span class="btn_size_guide">Hướng dẫn chọn size</span>
+            </div>
+            <div class="box_select_size">
+                <div @*v-show="product.NewProduct"*@ class="labelNewNew styleTogetherLabel">FREE SIZE</div>
+            </div>
+            <div class="box_quantity">
+                <div class="box_quantity_parent">
+                    <div class="btn_minus_quantity" v-on:click="MinusQuantityProduct()">-</div>
+                    <div class="quantity_product">{{QuantityProduct}}</div>
+                    <div class="btn_plus_quantity" v-on:click="PlusQuantityProduct()">+</div>
+                </div>
+            </div>
+            <div class="box_button_for_user">
+                @if (Session["IdUser"] != null && Session["UserFullName"] != null && Session["RoleUser"] != null)
+                {
+                    <div class="btn_user btn_add_carts" v-on:click="AddCart()" v-bind:class="{'disabled btn_out_stock' : !dataProduct.Quantity}">THÊM VÀO GIỎ HÀNG</div>
+                    <div class="btn_user btn_buy_now" v-on:click="AddCart()" v-bind:class="{'disabled  btn_out_stock' : !dataProduct.Quantity}">MUA NGAY</div>
+                }
+                else
+                {
+                    <div class="btn_user btn_add_carts" v-on:click="checkAccount()" v-bind:class="{'disabled btn_out_stock' : !dataProduct.Quantity}">THÊM VÀO GIỎ HÀNG</div>
+                    <div class="btn_user btn_buy_now" v-on:click="checkAccount()" v-bind:class="{'disabled  btn_out_stock' : !dataProduct.Quantity}">MUA NGAY</div>
+                }
+            </div>
+        </div>
+        <div class="box_parameter">
+            <div class="box_border_bot product_specifications">
+                <div class="box_title_specifications">
+                    <span class="title-text">Thông số sản phẩm</span>
+                    <span class="btn_see_detail">+</span>
+                    <span class="btn_see_detail hidden">-</span>
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="box_border_bot return_policy">
+                <div class="box_title_policy">
+                    <span class="title-text">Chính sách đổi trả</span>
+                    <span class="btn_see_detail">+</span>
+                    <span class="btn_see_detail hidden">-</span>
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="box_border_bot care_instructions">
+                <div class="box_title_instructions">
+                    <span class="title-text">Hướng dẫn bảo quản</span>
+                    <span class="btn_see_detail">+</span>
+                    <span class="btn_see_detail hidden">-</span>
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+        <div class="product-description-infor">
+            <div class="div_policy_1">
+                <div class="iconPolicy">
+                    <img class="lazyautosizes ls-is-cached lazyloaded" data-sizes="auto" src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_1.png" data-src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_1.png" alt="free ship" sizes="20px">
+                </div>
+                <div class="infoPolicy">
+                    <h5>Miễn phí giao hàng toàn quốc</h5>
+                    <span>(Sản phẩm trên 300,000đ)</span>
+                </div>
+            </div>
+            <div class="div_policy_1">
+                <div class="iconPolicy">
+                    <img class="lazyautosizes ls-is-cached lazyloaded" data-sizes="auto" src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_3.png" data-src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_3.png" alt="free ship" sizes="20px">
+                </div>
+                <div class="infoPolicy">
+                    <h5>Đổi trả dễ dàng</h5>
+                    <span>(Đổi trả 90 ngày cho Giày và 30 ngày cho Túi)</span>
+                </div>
+            </div>
+            <div class="div_policy_1">
+                <div class="iconPolicy">
+                    <img class="lazyautosizes ls-is-cached lazyloaded" data-sizes="auto" src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_4.png" data-src="https://daisystore.vn/tp/T0298/img/tmp/img_policy_4.png" alt="free ship" sizes="20px">
+                </div>
+                <div class="infoPolicy">
+                    <h5>Tổng đài bán hàng 1900 1000</h5>
+                    <span>(Miễn phí từ 8h30 đến 21h30 mỗi ngày)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/Product/DetailProduct.js"></script>
+
+}
+
